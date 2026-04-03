@@ -1,0 +1,4 @@
+﻿Playlist html canonical restore report
+HTML pages restored: 314
+Directory redirects written: 314
+Alias directories preserved: 191

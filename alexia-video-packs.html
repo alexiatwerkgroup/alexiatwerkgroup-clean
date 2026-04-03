@@ -1,0 +1,172 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Alexia Video Packs | The Private Side Of The Door</title>
+<meta name="description" content="Alexia Video Packs: three private access tiers for people who already know they want more than the public preview.">
+<style>
+:root{--bg0:#050508;--bg1:#0b0b12;--line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);--txt:#f5f5fb;--mut:#b4b4c3;--radius:24px;--shadow:0 28px 80px rgba(0,0,0,.56);}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin: 4px 6px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--txt);background:radial-gradient(880px 520px at 16% 8%, rgba(180,24,59,.13), transparent 58%),radial-gradient(860px 540px at 84% 12%, rgba(95,86,255,.10), transparent 58%),linear-gradient(180deg,var(--bg0),var(--bg1));}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1220px;margin: 4px 6px;padding:34px 18px 78px}
+.brand{font-weight:900;letter-spacing:.08em;text-transform:uppercase;font-size:12px;opacity:.92;margin-bottom:14px}
+.panel{border:1px solid var(--line);border-radius:28px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.02));box-shadow:var(--shadow)}
+.content{padding:28px}
+.nav-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.nav-btn,.nav-btn:visited{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#f1f1f6;text-decoration:none;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:transform .18s ease, background .18s ease, border-color .18s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.nav-btn:hover{background:rgba(255,255,255,.07);border-color:var(--line-strong);transform:translateY(-1px)}
+.nav-btn.active{border-color:rgba(255,255,255,.20);background:rgba(255,255,255,.08)}
+h1{margin: 4px 6px;font-size:clamp(34px,5vw,60px);font-weight:900;line-height:1.02}
+.lede{margin: 4px 6px;color:var(--mut);line-height:1.8;font-size:16px;max-width:950px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#d9d9e6;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+.pack{border:1px solid rgba(255,255,255,.08);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02));overflow:hidden}
+.packHead{padding:20px 20px 14px;border-bottom:1px solid rgba(255,255,255,.08);background:radial-gradient(920px 520px at 100% 0%, rgba(106,92,255,.10), transparent 48%),rgba(10,10,16,.82)}
+.packName{font-size:28px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;margin: 4px 6px;font-size:16px;color:#effff9;letter-spacing:.14em;text-transform:uppercase}
+.packBody{padding:18px 20px 20px}
+.packBody p{margin: 4px 6px;color:rgba(245,245,251,.94);line-height:1.8}
+.statline{display:grid;grid-template-columns:1fr auto;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.06)}
+.statline:first-of-type{border-top:0;padding-top:0}
+.label{color:#8c8c97;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.value{font-weight:800}
+.muted{color:#a7a7b4}
+.section{margin-top:18px;border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(16,16,24,.58);padding:20px}
+.section h2{margin: 4px 6px;font-size:20px;letter-spacing:.01em}
+.section p{margin: 4px 6px;color:#a7a7b4;line-height:1.8}
+.discordRow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.discordBtn{display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;border-radius:999px;border:1px solid rgba(0,255,170,.35);background:linear-gradient(145deg,rgba(0,255,170,.18),rgba(0,255,170,.06));color:#fff;font-size:14px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 0 36px rgba(0,255,170,.10)}
+.footerPanel{margin-top:18px;padding:18px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.03);display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}
+.footerPanel strong{display:block;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.footerPanel span{color:#a7a7b4}
+.footerLinks{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.footerLinks a{padding:9px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#a7a7b4}
+@media(max-width:980px){.grid,.footerPanel{grid-template-columns:1fr}.footerLinks{justify-content:flex-start}}
+@media(max-width:700px){.content{padding:20px}}
+
+:root{--bg0:#050508;--bg1:#0b0b12;--card:#11131a;--line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.16);--txt:#f5f5fb;--mut:#b4b4c3;--radius:24px;--shadow:0 28px 80px rgba(0,0,0,.56);--shadow-soft:0 18px 42px rgba(0,0,0,.32)}
+body{background:radial-gradient(1100px 620px at 9% 10%, rgba(178,23,58,.19), transparent 56%),radial-gradient(960px 620px at 88% 10%, rgba(93,70,204,.10), transparent 58%),linear-gradient(180deg,var(--bg0),var(--bg1)) !important}
+.wrap{max-width:1220px !important;padding-bottom:84px !important}
+.nav-main{margin-bottom:22px !important}
+.nav-row,.action-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.nav-btn,.nav-btn:visited,.action-btn,.action-btn:visited{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.04)!important;border:1px solid var(--line)!important;color:#f1f1f6!important;text-decoration:none!important;font-size:12px;letter-spacing:.08em;text-transform:uppercase;transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.nav-btn:hover,.action-btn:hover{background:rgba(255,255,255,.07)!important;border-color:var(--line-strong)!important;transform:translateY(-1px)}
+.nav-btn.active,.action-btn.active{border-color:rgba(255,255,255,.22)!important;background:rgba(255,255,255,.08)!important}
+.panel{position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:-1px auto auto -1px;width:38%;height:55%;background:radial-gradient(circle, rgba(157,26,63,.18), transparent 70%);pointer-events:none}
+.panel::after{content:"";position:absolute;right:-90px;top:-90px;width:280px;height:280px;background:radial-gradient(circle, rgba(121,105,255,.10), transparent 68%);pointer-events:none}
+.panel>*{position:relative;z-index:1}
+h1{letter-spacing:.01em !important}
+.lede{font-size:16px !important;line-height:1.78 !important;max-width:920px}
+.grid{margin-top:24px !important}
+@media (max-width:760px){.wrap{padding:22px 14px 60px !important}.panel .content,.content{padding:22px !important}}
+</style>
+<link rel="stylesheet" href="playlist/assets/pro-extras.css"/>
+<style id="alexia-unified-page-polish-v32">
+:root{--alexia-hero-fs:clamp(34px,5vw,60px);--alexia-hero-lh:1.02;--alexia-pill-py:10px;--alexia-pill-px:16px;--alexia-pill-fs:12px;}
+h1,.hero h1,.hero-title,h1.page-title{font-size:var(--alexia-hero-fs)!important;line-height:var(--alexia-hero-lh)!important;font-weight:900!important;letter-spacing:-.02em!important;text-transform:none!important;}
+.nav-btn,.nav-btn:visited,.nav a,.nav button,.pill,.pill:visited{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:var(--alexia-pill-py) var(--alexia-pill-px)!important;min-height:42px!important;border-radius:999px!important;font-size:var(--alexia-pill-fs)!important;font-weight:700!important;letter-spacing:.08em!important;text-transform:uppercase!important;line-height:1!important;white-space:nowrap!important;}
+@media (max-width: 900px){:root{--alexia-hero-fs:clamp(30px,8vw,46px);--alexia-pill-py:9px;--alexia-pill-px:13px;--alexia-pill-fs:11px;}}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://alexiatwerkgroup.com/"}, {"@type": "ListItem", "position": 2, "name": "Video Packs", "item": "https://alexiatwerkgroup.com/alexia-video-packs.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is included in the video packs?", "acceptedAnswer": {"@type": "Answer", "text": "Each tier opens a different level of private access, from a tempting first taste to the deeper legacy archive."}}, {"@type": "Question", "name": "Which pack is best for serious buyers?", "acceptedAnswer": {"@type": "Answer", "text": "Extended is the strongest sweet spot for most buyers, while Legacy is for people who want the deeper vault, not just a sample."}}, {"@type": "Question", "name": "How should I contact for availability?", "acceptedAnswer": {"@type": "Answer", "text": "Discord keeps the conversation direct, discreet and much easier when you want current availability or a custom answer."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Video Packs", "url": "https://alexiatwerkgroup.com/alexia-video-packs.html"}</script>
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<link rel="canonical" href="https://alexiatwerkgroup.com/alexia-video-packs.html"/>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alexia Video Packs | The Private Side Of The Door">
+<meta property="og:description" content="Alexia Video Packs: three private access tiers for people who already know they want more than the public preview.">
+<meta property="og:url" content="https://alexiatwerkgroup.com/alexia-video-packs.html">
+<meta property="og:image" content="https://alexiatwerkgroup.com/hero_alexia_local.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Alexia Video Packs | The Private Side Of The Door">
+<meta name="twitter:description" content="Alexia Video Packs: three private access tiers for people who already know they want more than the public preview.">
+<meta name="twitter:image" content="https://alexiatwerkgroup.com/hero_alexia_local.png">
+<meta name="theme-color" content="#0b0b12"/>
+
+
+
+<link rel="stylesheet" href="/assets/alexia-visual-polish.css">
+
+<link rel="stylesheet" href="/assets/premium-polish-v10.css"/>
+
+<link rel="stylesheet" href="/assets/site-nav-final.css?v=4"/>
+<link rel="stylesheet" href="/assets/v9-fixes.css">
+<style id="final-center-fix-videopacks">
+body{margin:0!important;}
+.wrap{width:min(1220px,calc(100% - 44px)) !important;max-width:1220px !important;margin-left:auto !important;margin-right:auto !important;padding:34px 18px 84px!important;box-sizing:border-box!important;}
+@media (max-width:760px){.wrap{width:min(1220px,calc(100% - 44px)) !important;padding:22px 12px 60px!important;}}
+</style>
+<link rel="stylesheet" href="/assets/final-10.css?v=1">
+<script defer src="/assets/final-10.js?v=1"></script>
+<link rel="stylesheet" href="/premium.css">
+</head>
+<body class="has-final-nav">
+<div class="site-nav-final"><div class="site-nav-final__inner"><nav class="site-nav-final__links" aria-label="Main"><a href="/home.html">Home</a><a href="/playlist/">Playlist</a><a href="/community.html">Community</a><a href="/top-100-twerk-videos.html">Top 100</a><a href="/best-twerk-dancers.html">Best Dancers</a><a href="/alexia-video-packs.html" class="is-active">Video Packs</a><a href="/profile.html">Profile</a></nav><div class="site-nav-final__online"><span class="site-nav-final__dot" aria-hidden="true"></span><span>ONLINE NOW</span><span data-alexia-online-count>891</span></div></div></div>
+
+<div class="wrap">
+<div class="panel">
+    <div class="content">
+      
+      <h1>Alexia Video Packs</h1>
+      <p class="lede">This is the page for people who are already leaning in. Three private tiers, three different depths of access, and a cleaner way to choose how far past the public preview you want to go.</p>
+      <div class="stats"><span class="stat">Starter</span><span class="stat">Extended</span><span class="stat">Legacy</span><span class="stat">Private Contact</span></div>
+
+      <div class="grid">
+        <div class="pack"><div class="packHead"><h2 class="packName">Starter</h2><div class="packPrice">139 USD today</div></div><div class="packBody"><p>12 raw 1080p 60fps videos chosen as the first private step: enough heat to change the mood, enough variety to keep it interesting, and a price that opens the door without making it feel cheap.</p><div class="statline"><div class="label">Historical single-sale value</div><div class="value">~1,260 USD</div></div><div class="statline"><div class="label">Current pack price</div><div class="value">139 USD</div></div><div class="statline"><div class="label">Effective cost today</div><div class="value">~11.6 USD / video</div></div><div class="statline"><div class="label">What makes it work</div><div class="value muted">A clean first taste with enough pull to justify the next step.</div></div></div></div>
+        <div class="pack"><div class="packHead"><h2 class="packName">Extended</h2><div class="packPrice">237 USD today</div></div><div class="packBody"><p>35 selected videos with more depth, more customs and a much stronger sense that you're no longer in the public part of the room. This is the tier for buyers who already know a sample won't be enough.</p><div class="statline"><div class="label">Historical single-sale value</div><div class="value">~3,675 USD</div></div><div class="statline"><div class="label">Current pack price</div><div class="value">237 USD</div></div><div class="statline"><div class="label">Effective cost today</div><div class="value">~6.77 USD / video</div></div><div class="statline"><div class="label">Why it converts</div><div class="value muted">The sweetest spot between depth, value and temptation.</div></div></div></div>
+        <div class="pack"><div class="packHead"><h2 class="packName">Legacy</h2><div class="packPrice">890 USD today</div></div><div class="packBody"><p>240+ videos positioned as the deeper private vault: older originals, heavier continuity and the feeling that you've stopped browsing and started collecting. This tier is not trying to please everyone.</p><div class="statline"><div class="label">Estimated archive value</div><div class="value">~4,800+ USD</div></div><div class="statline"><div class="label">Current pack price</div><div class="value">890 USD</div></div><div class="statline"><div class="label">Effective cost today</div><div class="value">~3.7 USD / video</div></div><div class="statline"><div class="label">Positioning</div><div class="value muted">Deeper archive access for people who want the whole mood.</div></div></div></div>
+      </div>
+
+      <div class="section">
+        <h2>How the offer is framed</h2>
+        <p>These are not throwaway bundles. They are positioned as controlled access to a private side of the archive, which means the value comes from depth, curation and not having to piece everything together one by one.</p>
+        <p>The point is to make the choice feel easy without making the archive feel cheap. Starter opens the door. Extended is where most people want to stay. Legacy is for the ones who already know they want more.</p>
+      </div>
+
+      <div class="section">
+        <div class="discordRow">
+          <div>
+            <h2>Want in?</h2>
+            <p>The direct route is Discord. It keeps the conversation cleaner, faster and a lot more discreet when you're asking about availability, customs or the next step.</p>
+          </div>
+          <a class="discordBtn" href="https://discord.com/invite/aJUGwymKqm" target="_blank" rel="noopener noreferrer">Contact on Discord â†—</a>
+        </div>
+      </div>
+
+      <div class="footerPanel">
+        <div><strong></strong><span>Private tiers, direct contact and a much cleaner way into the side of the archive that doesn't need to shout.</span></div>
+        <div class="footerLinks"><a href="home.html">Home</a><a href="twerk-dance-video.html">Videos</a><a href="twerk-tutorials.html">Tutorials</a><a href="twerk-dance-battle.html">Battle</a><a href="twerk-workout-glutes.html">Workout</a></div>
+      </div>
+
+      <section class="surgical-support" aria-label="SEO support section">
+        <style>
+          .surgical-support{margin-top:24px;padding:18px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.02))}
+          .surgical-support h2{margin: 4px 6px;font-size:18px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}
+          .surgical-support p{margin: 4px 6px;line-height:1.75;color:rgba(245,245,251,.92)}
+          .surgical-grid{display:grid;gap:12px}
+          .surgical-box{border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.03);padding:14px}
+          .surgical-small{color:#a7a7b4;line-height:1.7}
+          .surgical-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+          .surgical-link-pill{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03);text-decoration:none}
+        </style>
+        <h2>Why This Page Exists</h2>
+        <p>This page exists to make the private offer feel clear, selective and worth opening. It is here to explain the tiers, reduce hesitation and guide the right buyers into a direct conversation.</p>
+        <p>Anyone who wants a broader route can keep moving through <a href="home.html">Archive Home</a>, <a href="twerk-dance-video.html">Video Hub</a> and <a href="twerk-tutorials.html">Tutorials</a>. That keeps the mood cleaner and the intent sharper.</p>
+        <h2>Search Intent Clarification</h2><div class="surgical-grid"><div class="surgical-box"><strong>What is included in the video packs?</strong><div class="surgical-small" style="margin-top:8px">Each tier opens a different level of private access, from a tempting first taste to the deeper legacy archive.</div></div><div class="surgical-box"><strong>Which pack is best for serious buyers?</strong><div class="surgical-small" style="margin-top:8px">Extended is usually the sweet spot, while Legacy is for buyers who want the deeper vault, not just a sample.</div></div><div class="surgical-box"><strong>How should I contact for availability?</strong><div class="surgical-small" style="margin-top:8px">Discord keeps the conversation direct, discreet and easier to manage.</div></div></div>
+        <h2>Related Pages</h2>
+        <div class="surgical-pills"><a class="surgical-link-pill" href="home.html">Archive Home</a><a class="surgical-link-pill" href="twerk-dance-video.html">Video Hub</a><a class="surgical-link-pill" href="twerk-tutorials.html">Tutorials</a><a class="surgical-link-pill" href="twerk-workout-glutes.html">Workout</a></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script defer src="/analytics-profile.js"></script>
+
+<script defer src="/assets/premium-polish-v10.js"></script>
+<script defer src="/assets/online-count-global.js"></script>
+</body>
+</html>
+

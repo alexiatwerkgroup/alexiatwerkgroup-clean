@@ -1,0 +1,5 @@
+﻿Playlist clean directory publish report
+Files scanned: 506
+Directories written: 505
+Redirect dirs: 191
+Full copies: 314

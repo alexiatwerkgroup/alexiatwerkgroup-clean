@@ -1,0 +1,5 @@
+﻿Playlist detail link fix report
+Files scanned: 505
+Files changed: 314
+Playlist hub fixes: 1256
+Index path fixes: 0

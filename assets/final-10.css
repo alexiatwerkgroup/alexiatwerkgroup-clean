@@ -1,0 +1,1145 @@
+
+/* Final 10 pass: safe visual polish */
+html{scroll-behavior:smooth}
+body{overflow-x:hidden !important}
+.site-nav-final{backdrop-filter:blur(10px)}
+
+/* Center main shells on main pages */
+.wrap{margin-left:auto !important;margin-right:auto !important}
+
+/* Home */
+body.home-page .wrap,
+body[data-page="home"] .wrap{max-width:980px !important;padding-top:18px !important;padding-bottom:120px !important}
+body.home-page .card,
+body[data-page="home"] .card{overflow:visible !important;margin-bottom:0 !important}
+body.home-page .heroRow,
+body[data-page="home"] .heroRow{align-items:center !important}
+body.home-page .panel,
+body[data-page="home"] .panel{box-shadow:0 18px 44px rgba(0,0,0,.32)}
+body.home-page .heroImg .frame,
+body[data-page="home"] .heroImg .frame{box-shadow:0 18px 44px rgba(0,0,0,.28)}
+
+/* Main index overlay */
+body.intro-page .overlay .panel,
+body[data-page="intro"] .overlay .panel{backdrop-filter:blur(10px);box-shadow:0 24px 64px rgba(0,0,0,.45)}
+
+/* Shared content polish */
+.panel,.hero,.card,.tile,.pack,.rank-card{box-shadow:0 24px 64px rgba(0,0,0,.34)}
+.card,.tile,.pack,.rank-card,.model-card,.video-card,.group-card{transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+
+/* Page heroes */
+.hero-top h1,.content h1,.hero-copy h1,.headerBlock h1{letter-spacing:.04em !important}
+.hero-top .lede,.content .lede,.hero-copy .sub,.headerBlock .subtitle{max-width:72ch}
+
+/* Top100 / Best dancers / Packs / Community / Profile centering & polish */
+body.top100-page .wrap, body.best-page .wrap, body.packs-page .wrap, body.community-page .wrap{max-width:1220px !important}
+body.profile-page .wrap{max-width:1040px !important}
+body.community-page .panel, body.profile-page .panel{backdrop-filter:blur(10px)}
+
+/* Video pages */
+body.video-page .side p,
+body.video-page aside.side p{font-size:14px !important;line-height:1.6 !important;color:rgba(255,255,255,.78) !important}
+body.video-page .vote-box,
+body.video-page .alexia-hm-box,
+body.video-page .clip-finder{box-shadow:0 16px 40px rgba(0,0,0,.24) !important}
+body.video-page #alexia-jump-most,
+body.video-page .unlock-paid-content-btn,
+body.video-page a[href$="paid-content.html"]{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:800;letter-spacing:.02em}
+
+/* Reduce visual noise on video pages */
+body.video-page .particle-layer,
+body.video-page .noise-overlay,
+body.video-page .fx-layer,
+body.video-page .glow-orb{display:none !important}
+
+/* Consistent buttons */
+.btn,button,.quick-link,.nav-btn,.topnav a,.topnav span{font-weight:700}
+
+
+/* === VISUAL 10 SAFE POLISH === */
+:root{
+  --ax-pink:#ff47c7;
+  --ax-pink-soft:rgba(255,71,199,.20);
+  --ax-border-soft:rgba(255,255,255,.10);
+  --ax-surface-soft:linear-gradient(180deg, rgba(255,255,255,.048), rgba(255,255,255,.022));
+}
+
+/* Keep pages elegant without changing layout logic */
+.wrap.page{
+  max-width:1220px !important;
+}
+/* Ocultar h2 fantasma dentro de seo-intro */
+.seo-intro h2{
+  display:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  height:0 !important;
+}
+
+.breadcrumb{
+  margin:6px 0 14px !important;
+  color:rgba(255,255,255,.82) !important;
+  font-size:13px !important;
+  line-height:1.45 !important;
+  letter-spacing:.01em !important;
+}
+
+.seo-intro{
+  margin-bottom:18px !important;
+  padding:14px 18px !important;
+  border-radius:24px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018)) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.04) !important;
+  backdrop-filter:blur(10px) !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+  width:100% !important;
+}
+.seo-intro p{
+  margin:0 0 12px !important;
+  max-width:92ch !important;
+  color:rgba(255,255,255,.84) !important;
+  font-size:15px !important;
+  line-height:1.62 !important;
+}
+.seo-pills{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  justify-content:center !important;
+  gap:8px 10px !important;
+  width:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+}
+/* Cada pill: tamaño flexible para que quepan en el ancho disponible */
+.seo-pill,.seo-pills span,.seo-pills a{
+  flex-shrink:1 !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+  max-width:100% !important;
+}
+.seo-pills .pill,
+.seo-pills .chip,
+.seo-pills a{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:34px !important;
+  padding:0 14px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.026)) !important;
+  color:#fff !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  letter-spacing:.04em !important;
+  box-shadow:0 8px 22px rgba(0,0,0,.18) !important;
+}
+
+.video-shell,
+.player,
+.vote-box,
+.alexia-hm-box,
+.recommend-cta,
+.side,
+.yt-comments{
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:var(--ax-surface-soft) !important;
+  box-shadow:0 20px 48px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.03) !important;
+  backdrop-filter:blur(10px) !important;
+}
+.video-shell,
+.recommend-cta,
+.side,
+.yt-comments{
+  border-radius:24px !important;
+}
+.alexia-hm-box,
+.vote-box{
+  border-radius:18px !important;
+}
+
+.video-shell{
+  overflow:hidden !important;
+}
+.video-shell .embed iframe,
+.video-shell .embed,
+.video-shell .player iframe{
+  border-radius:20px 20px 0 0 !important;
+}
+
+.content h1,
+.video-shell h1,
+.alexia-seo-h1,
+.hero-top h1{
+  letter-spacing:-.035em !important;
+  line-height:.96 !important;
+  text-wrap:balance;
+}
+body.video-page .side h2,
+body.video-page aside.side h2,
+.side h2{
+  font-size:28px !important;
+  line-height:1.12 !important;
+  letter-spacing:-.03em !important;
+}
+.side p,
+.side .meta,
+.side .section-sub,
+.vote-box .video-meta-line{
+  color:rgba(255,255,255,.78) !important;
+}
+
+.page-top-actions{
+  gap:10px !important;
+}
+.streak-pill,
+.replay-chip,
+.heat-chip,
+.badge,
+.pill,
+.seo-pill,
+.card-tag,
+.play-badge{
+  box-shadow:0 8px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.alexia-hm-head{
+  margin-bottom:10px !important;
+}
+.alexia-hm-title,
+.recommend-title{
+  font-size:clamp(18px, 2vw, 24px) !important;
+  font-weight:800 !important;
+  letter-spacing:-.03em !important;
+}
+.vote-box-title{
+  font-size:12px !important;
+  font-weight:700 !important;
+  letter-spacing:.01em !important;
+  white-space:nowrap !important;
+}
+.alexia-hm-status,
+.recommend-sub,
+.alexia-hm-note{
+  color:rgba(255,255,255,.74) !important;
+}
+#alexia-jump-most,
+.unlock-paid-content-btn,
+a[href$="paid-content.html"],
+.replay-chip[href$="paid-content.html"],
+.paid-unlock-btn{
+  min-height:42px !important;
+  padding:0 22px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,0,127,.55) !important;
+  background:linear-gradient(180deg,#ff007f,#ff1493) !important;
+  color:#fff !important;
+  font-weight:800 !important;
+  box-shadow:0 0 22px rgba(255,0,127,.55),0 12px 28px rgba(0,0,0,.28) !important;
+}
+#alexia-jump-most:hover,
+.unlock-paid-content-btn:hover,
+a[href$="paid-content.html"]:hover,
+.replay-chip[href$="paid-content.html"]:hover,
+.paid-unlock-btn:hover{
+  transform:translateY(-1px);
+  background:linear-gradient(180deg,#ff1493,#ff69b4) !important;
+  border-color:rgba(255,0,127,.75) !important;
+  box-shadow:0 0 32px rgba(255,0,127,.7),0 16px 34px rgba(0,0,0,.30) !important;
+}
+
+/* === COMENTARIOS === */
+.yt-comments{
+  padding:18px 18px 18px !important;
+}
+/* Misma tipografía para Comments / HOT REPLAYS / TOP DISCUSSION */
+.yt-comments-head h2,
+.alexia-discussion-head strong{
+  font-size:18px !important;
+  font-weight:900 !important;
+  letter-spacing:.16em !important;
+  text-transform:uppercase !important;
+}
+/* === COMPOSE BOX: botones Cancel/Comment DENTRO de la caja === */
+.yt-compose{
+  display:grid !important;
+  grid-template-columns:46px 1fr !important;
+  grid-template-rows:auto !important;
+  height:auto !important;
+  min-height:auto !important;
+  max-height:none !important;
+  border-radius:16px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03)) !important;
+  padding:14px !important;
+  gap:10px 12px !important;
+  overflow:visible !important;
+  flex:unset !important;
+}
+.yt-avatar{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  align-self:flex-start !important;
+}
+.yt-compose-main{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  min-width:0 !important;
+}
+.yt-input{
+  border-radius:0 !important;
+  border:none !important;
+  border-bottom:1px solid rgba(255,255,255,.16) !important;
+  background:transparent !important;
+  padding:4px 0 8px !important;
+}
+.yt-compose-actions{
+  display:flex !important;
+  justify-content:flex-end !important;
+  gap:10px !important;
+  margin-top:0 !important;
+  padding-bottom:0 !important;
+}
+.yt-input,
+.yt-compose textarea,
+.yt-compose input{
+  border-radius:16px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)) !important;
+  color:#fff !important;
+  padding:12px 14px !important;
+}
+.yt-btn-post,
+.yt-btn-lite{
+  min-height:40px !important;
+  border-radius:999px !important;
+}
+
+/* Final visual master pass */
+:root{
+  --ax-plum:#1a0d1b;
+  --ax-burgundy:#28111f;
+  --ax-ivory:#fff8fb;
+  --ax-text-soft:rgba(255,248,251,.76);
+  --ax-line:rgba(255,255,255,.10);
+  --ax-card:linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.024));
+  --ax-card-alt:linear-gradient(135deg, rgba(255,93,173,.08), rgba(255,208,149,.04));
+  --ax-shadow-deep:0 28px 90px rgba(0,0,0,.40);
+  --ax-type-hero:clamp(34px, 4.6vw, 62px);
+  --ax-type-display:clamp(30px, 3.9vw, 52px);
+  --ax-type-title:clamp(22px, 2.4vw, 34px);
+  --ax-type-section:clamp(20px, 2vw, 28px);
+  --ax-type-card:clamp(16px, 1.45vw, 21px);
+  --ax-type-body:15px;
+  --ax-type-small:13px;
+}
+
+body{
+  color:var(--ax-ivory);
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.06) .7px, transparent .7px);
+  background-size:24px 24px;
+  opacity:.08;
+  mix-blend-mode:soft-light;
+}
+
+.panel,.hero,.card,.tile,.pack,.rank-card,.model-card,.video-card,.group-card,.recommend-cta,.side,.yt-comments,.vote-box,.alexia-hm-box,.video-shell,.player{
+  border:1px solid var(--ax-line) !important;
+  background:var(--ax-card), var(--ax-card-alt) !important;
+  box-shadow:var(--ax-shadow-deep), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+.hero-top,.hero-copy,.headerBlock,.content-head{
+  position:relative;
+}
+
+.hero-top::after,.hero-copy::after,.headerBlock::after,.content-head::after{
+  content:"";
+  display:block;
+  width:84px;
+  height:2px;
+  margin-top:18px;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(255,90,170,.95), rgba(255,212,156,.95));
+  box-shadow:0 0 20px rgba(255,90,170,.22);
+}
+
+.hero-top h1,.content h1,.hero-copy h1,.headerBlock h1,.alexia-seo-h1{
+  color:#fff8fb !important;
+  font-size:var(--ax-type-hero) !important;
+  line-height:.92 !important;
+  letter-spacing:-.05em !important;
+  max-width:11ch;
+}
+
+.hero-top .lede,.content .lede,.hero-copy .sub,.headerBlock .subtitle,.side p,.breadcrumb,.seo-intro p,.recommend-sub,.alexia-hm-note{
+  color:var(--ax-text-soft) !important;
+}
+
+.seo-intro,
+.recommend-cta,
+.side,
+.yt-comments{
+  border-radius:26px !important;
+}
+
+.card,.tile,.pack,.rank-card,.model-card,.video-card,.group-card{
+  overflow:hidden;
+}
+
+.card:hover,.tile:hover,.pack:hover,.rank-card:hover,.model-card:hover,.video-card:hover,.group-card:hover{
+  transform:translateY(-4px) !important;
+  box-shadow:0 34px 110px rgba(0,0,0,.46), 0 0 28px rgba(255,90,170,.08) !important;
+}
+
+.btn,
+button,
+.quick-link,
+.nav-btn,
+.topicBtn,
+.topnav a,
+.buttonRow a,
+.toolbar a,
+.toolbar button,
+.yt-btn-post,
+.yt-btn-lite{
+  border:1px solid rgba(255,255,255,.11) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.11), rgba(255,255,255,.03)),
+    linear-gradient(135deg, rgba(255,94,177,.09), rgba(255,212,156,.05)) !important;
+  color:#fff8fb !important;
+  box-shadow:0 12px 28px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.btn:hover,
+button:hover,
+.quick-link:hover,
+.nav-btn:hover,
+.topicBtn:hover,
+.topnav a:hover,
+.buttonRow a:hover,
+.toolbar a:hover,
+.toolbar button:hover,
+.yt-btn-post:hover,
+.yt-btn-lite:hover{
+  transform:translateY(-1px);
+  border-color:rgba(255,214,164,.26) !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.26), 0 0 24px rgba(255,90,170,.08) !important;
+}
+
+#alexia-jump-most,
+.unlock-paid-content-btn,
+a[href$="paid-content.html"],
+.replay-chip[href$="paid-content.html"],
+.paid-unlock-btn,
+.yt-btn-post{
+  border-color:rgba(255,184,214,.30) !important;
+  background:
+    linear-gradient(180deg, #ff5aac, #ff2f87) !important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 18px 40px rgba(0,0,0,.28), 0 0 28px rgba(255,71,199,.28) !important;
+}
+
+.video-shell .embed iframe,
+.video-shell .embed,
+.video-shell .player iframe,
+.heroImg .frame,
+.card img,
+.tile img,
+.video-card img{
+  border-radius:22px !important;
+}
+
+.badge,.pill,.chip,.play-badge,.card-tag,.streak-pill,.replay-chip,.heat-chip,.seo-pills a{
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03)) !important;
+  color:#fff7fb !important;
+}
+
+/* Global typography harmonization */
+body.has-final-nav h1,
+body.has-final-nav .heroTitle,
+body.has-final-nav .playlist-hero-title,
+body.has-final-nav .sideInner h1,
+body.has-final-nav .content h1,
+body.has-final-nav .hero h1,
+body.site-nav-final--playlist h1,
+body.site-nav-final--playlist .heroTitle,
+body.site-nav-final--playlist .playlist-hero-title,
+body.site-nav-final--playlist .content h1,
+body.site-nav-final--playlist .hero h1{
+  font-size:var(--ax-type-display) !important;
+  line-height:.95 !important;
+  letter-spacing:-.04em !important;
+  text-transform:none !important;
+}
+body.has-final-nav .alexia-seo-h1{
+  font-size:clamp(28px, 3vw, 40px) !important;
+  line-height:1 !important;
+  letter-spacing:-.03em !important;
+}
+body.has-final-nav h2,
+body.has-final-nav .section h2,
+body.has-final-nav .section-head h2,
+body.has-final-nav .title,
+body.has-final-nav .sectionTitle,
+body.has-final-nav .recommend-title,
+body.has-final-nav .alexia-hm-title,
+body.site-nav-final--playlist h2,
+body.site-nav-final--playlist .section h2,
+body.site-nav-final--playlist .section-head h2,
+body.site-nav-final--playlist .title,
+body.site-nav-final--playlist .sectionTitle,
+body.site-nav-final--playlist .recommend-title,
+body.site-nav-final--playlist .alexia-hm-title{
+  font-size:var(--ax-type-section) !important;
+  line-height:1.08 !important;
+  letter-spacing:-.025em !important;
+  text-transform:none !important;
+}
+body.has-final-nav h3,
+body.has-final-nav .copy strong,
+body.has-final-nav .meta strong,
+body.has-final-nav .leaderboard-head h3,
+body.has-final-nav .playlist-row-top h3,
+body.has-final-nav .mini-card h4,
+body.site-nav-final--playlist h3,
+body.site-nav-final--playlist .copy strong,
+body.site-nav-final--playlist .meta strong,
+body.site-nav-final--playlist .leaderboard-head h3,
+body.site-nav-final--playlist .playlist-row-top h3,
+body.site-nav-final--playlist .mini-card h4{
+  font-size:var(--ax-type-card) !important;
+  line-height:1.18 !important;
+  letter-spacing:-.015em !important;
+  text-transform:none !important;
+}
+body.has-final-nav p,
+body.has-final-nav li,
+body.has-final-nav .sub,
+body.has-final-nav .lede,
+body.has-final-nav .heroDesc,
+body.has-final-nav .copy p,
+body.has-final-nav .meta p,
+body.has-final-nav .lede-main,
+body.has-final-nav .top100-sub,
+body.site-nav-final--playlist p,
+body.site-nav-final--playlist li,
+body.site-nav-final--playlist .sub,
+body.site-nav-final--playlist .lede,
+body.site-nav-final--playlist .heroDesc,
+body.site-nav-final--playlist .copy p,
+body.site-nav-final--playlist .meta p,
+body.site-nav-final--playlist .lede-main,
+body.site-nav-final--playlist .top100-sub{
+  font-size:var(--ax-type-body) !important;
+  line-height:1.66 !important;
+}
+body.has-final-nav .kicker,
+body.has-final-nav .eyebrow,
+body.has-final-nav .subtitle,
+body.has-final-nav .brandSub,
+body.has-final-nav .meta,
+body.has-final-nav .small,
+body.has-final-nav .note,
+body.has-final-nav .lede-small,
+body.site-nav-final--playlist .kicker,
+body.site-nav-final--playlist .eyebrow,
+body.site-nav-final--playlist .subtitle,
+body.site-nav-final--playlist .brandSub,
+body.site-nav-final--playlist .meta,
+body.site-nav-final--playlist .small,
+body.site-nav-final--playlist .note,
+body.site-nav-final--playlist .lede-small{
+  font-size:var(--ax-type-small) !important;
+  line-height:1.5 !important;
+  letter-spacing:.08em !important;
+}
+body.has-final-nav .badge,
+body.has-final-nav .pill,
+body.has-final-nav .chip,
+body.has-final-nav .play-badge,
+body.has-final-nav .card-tag,
+body.has-final-nav .streak-pill,
+body.has-final-nav .replay-chip,
+body.has-final-nav .heat-chip,
+body.has-final-nav .nav a,
+body.has-final-nav .nav button,
+body.site-nav-final--playlist .badge,
+body.site-nav-final--playlist .pill,
+body.site-nav-final--playlist .chip,
+body.site-nav-final--playlist .play-badge,
+body.site-nav-final--playlist .card-tag,
+body.site-nav-final--playlist .streak-pill,
+body.site-nav-final--playlist .replay-chip,
+body.site-nav-final--playlist .heat-chip,
+body.site-nav-final--playlist .nav a,
+body.site-nav-final--playlist .nav button{
+  font-size:11px !important;
+  letter-spacing:.12em !important;
+}
+
+.breadcrumb,
+.seo-pills{
+  padding-left:2px;
+}
+
+@media (max-width:780px){
+  .hero-top h1,.content h1,.hero-copy h1,.headerBlock h1,.alexia-seo-h1{
+    max-width:100%;
+    font-size:clamp(34px, 10vw, 54px) !important;
+  }
+  .hero-top::after,.hero-copy::after,.headerBlock::after,.content-head::after{
+    width:64px;
+    margin-top:14px;
+  }
+}
+
+/* QA pass: normalize layout rhythm across pages with heavy inline CSS */
+body.has-final-nav .wrap,
+body.site-nav-final--playlist .wrap{
+  position:relative;
+  z-index:1;
+}
+body.has-final-nav .headerBlock,
+body.has-final-nav .hero-top,
+body.has-final-nav .content-head,
+body.has-final-nav .playlist-pro-head,
+body.has-final-nav .playlist-row-top,
+body.has-final-nav .keep-exploring,
+body.has-final-nav .section h2,
+body.site-nav-final--playlist .headerBlock,
+body.site-nav-final--playlist .hero-top,
+body.site-nav-final--playlist .content-head,
+body.site-nav-final--playlist .playlist-pro-head,
+body.site-nav-final--playlist .playlist-row-top,
+body.site-nav-final--playlist .keep-exploring,
+body.site-nav-final--playlist .section h2{
+  text-wrap:balance;
+}
+body.has-final-nav .headerBlock,
+body.has-final-nav .hero,
+body.has-final-nav .section,
+body.has-final-nav .playlist-pro-panel,
+body.has-final-nav .playlist-rows,
+body.has-final-nav .keep-exploring,
+body.has-final-nav .alexia-quick-routes,
+body.has-final-nav .surgical-support,
+body.has-final-nav .comment-invite-cta,
+body.site-nav-final--playlist .headerBlock,
+body.site-nav-final--playlist .hero,
+body.site-nav-final--playlist .section,
+body.site-nav-final--playlist .playlist-pro-panel,
+body.site-nav-final--playlist .playlist-rows,
+body.site-nav-final--playlist .keep-exploring,
+body.site-nav-final--playlist .alexia-quick-routes,
+body.site-nav-final--playlist .surgical-support,
+body.site-nav-final--playlist .comment-invite-cta{
+  overflow:hidden;
+}
+body.has-final-nav header,
+body.has-final-nav footer,
+body.has-final-nav .topTools{
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.025)),
+    linear-gradient(135deg, rgba(255,94,177,.06), rgba(255,212,156,.04)) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.04) !important;
+  backdrop-filter:blur(16px);
+}
+body.has-final-nav footer{
+  margin-top:22px;
+  padding:18px 20px;
+  border-radius:22px;
+  color:rgba(255,248,251,.72);
+}
+body.has-final-nav .topTools{
+  gap:12px;
+  padding:12px 16px !important;
+}
+body.has-final-nav .hero,
+body.has-final-nav .card,
+body.has-final-nav .section,
+body.has-final-nav .playlist-pro-panel,
+body.has-final-nav .playlist-rows,
+body.has-final-nav .keep-exploring,
+body.has-final-nav .alexia-quick-routes,
+body.has-final-nav .surgical-support,
+body.has-final-nav .featured-moment-dialog,
+body.site-nav-final--playlist .hero,
+body.site-nav-final--playlist .card,
+body.site-nav-final--playlist .section,
+body.site-nav-final--playlist .playlist-pro-panel,
+body.site-nav-final--playlist .playlist-rows,
+body.site-nav-final--playlist .keep-exploring,
+body.site-nav-final--playlist .alexia-quick-routes,
+body.site-nav-final--playlist .surgical-support,
+body.site-nav-final--playlist .featured-moment-dialog{
+  border-radius:28px !important;
+}
+body.has-final-nav .hero,
+body.has-final-nav .playlist-pro-panel,
+body.has-final-nav .playlist-rows,
+body.has-final-nav .keep-exploring,
+body.has-final-nav .alexia-quick-routes,
+body.has-final-nav .surgical-support,
+body.site-nav-final--playlist .hero,
+body.site-nav-final--playlist .playlist-pro-panel,
+body.site-nav-final--playlist .playlist-rows,
+body.site-nav-final--playlist .keep-exploring,
+body.site-nav-final--playlist .alexia-quick-routes,
+body.site-nav-final--playlist .surgical-support{
+  padding:clamp(18px, 2.2vw, 28px) !important;
+}
+body.has-final-nav .heroRow,
+body.has-final-nav .grid,
+body.has-final-nav .twoCols,
+body.has-final-nav .home-grid,
+body.site-nav-final--playlist .heroRow,
+body.site-nav-final--playlist .grid,
+body.site-nav-final--playlist .twoCols,
+body.site-nav-final--playlist .home-grid{
+  gap:clamp(16px, 2vw, 28px) !important;
+}
+body.has-final-nav .heroImg,
+body.has-final-nav .heroSide,
+body.has-final-nav .content,
+body.has-final-nav .mini-card-body,
+body.site-nav-final--playlist .heroImg,
+body.site-nav-final--playlist .heroSide,
+body.site-nav-final--playlist .content,
+body.site-nav-final--playlist .mini-card-body{
+  min-width:0;
+}
+body.has-final-nav .heroImg .frame,
+body.has-final-nav .playlistImageWrap,
+body.has-final-nav .featured-moment-frame-wrap,
+body.has-final-nav .videoBox{
+  border-radius:24px !important;
+}
+body.has-final-nav .playlist-kicker,
+body.has-final-nav .playlistEyebrow,
+body.has-final-nav .kicker,
+body.has-final-nav .tagline,
+body.site-nav-final--playlist .playlist-kicker,
+body.site-nav-final--playlist .playlistEyebrow,
+body.site-nav-final--playlist .kicker,
+body.site-nav-final--playlist .tagline{
+  color:rgba(255,229,238,.72) !important;
+  letter-spacing:.22em !important;
+}
+body.has-final-nav .subtitle,
+body.has-final-nav .playlist-hero-subtitle,
+body.has-final-nav .description,
+body.has-final-nav .section p,
+body.has-final-nav .fine,
+body.has-final-nav .note,
+body.has-final-nav .brand .tag,
+body.has-final-nav .progress-copy-advanced,
+body.site-nav-final--playlist .subtitle,
+body.site-nav-final--playlist .playlist-hero-subtitle,
+body.site-nav-final--playlist .description,
+body.site-nav-final--playlist .section p,
+body.site-nav-final--playlist .fine,
+body.site-nav-final--playlist .note,
+body.site-nav-final--playlist .brand .tag,
+body.site-nav-final--playlist .progress-copy-advanced{
+  color:rgba(255,248,251,.72) !important;
+}
+body.has-final-nav .badges,
+body.has-final-nav .topicRow,
+body.has-final-nav .btns,
+body.has-final-nav .filter-row,
+body.has-final-nav nav,
+body.site-nav-final--playlist .badges,
+body.site-nav-final--playlist .topicRow,
+body.site-nav-final--playlist .btns,
+body.site-nav-final--playlist .filter-row,
+body.site-nav-final--playlist nav{
+  row-gap:10px !important;
+}
+body.has-final-nav .playlist-hero-title,
+body.has-final-nav .playlistTitle,
+body.has-final-nav .playlistSub,
+body.site-nav-final--playlist .playlist-hero-title,
+body.site-nav-final--playlist .playlistTitle,
+body.site-nav-final--playlist .playlistSub{
+  white-space:normal !important;
+}
+body.has-final-nav .progress-shell,
+body.has-final-nav .progress-shell-hero,
+body.has-final-nav .progress-shell-advanced,
+body.site-nav-final--playlist .progress-shell,
+body.site-nav-final--playlist .progress-shell-hero,
+body.site-nav-final--playlist .progress-shell-advanced{
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.022)),
+    linear-gradient(135deg, rgba(255,94,177,.05), rgba(255,212,156,.03)) !important;
+  box-shadow:0 16px 36px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+body.has-final-nav .search-input,
+body.has-final-nav input[type="text"],
+body.has-final-nav input[type="search"],
+body.has-final-nav textarea{
+  border:1px solid rgba(255,255,255,.11) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025)) !important;
+  color:#fff8fb !important;
+}
+body.has-final-nav .search-input::placeholder,
+body.has-final-nav input::placeholder,
+body.has-final-nav textarea::placeholder{
+  color:rgba(255,248,251,.48) !important;
+}
+body.has-final-nav .list,
+body.has-final-nav .surgical-grid,
+body.site-nav-final--playlist .list,
+body.site-nav-final--playlist .surgical-grid{
+  display:grid;
+  gap:12px;
+  padding-left:0 !important;
+}
+body.has-final-nav .list li,
+body.site-nav-final--playlist .list li{
+  list-style:none;
+}
+body.has-final-nav .alexia-seo-h1{
+  width:min(1220px, calc(100% - 44px));
+  margin:10px auto 0 !important;
+  padding:0 6px;
+}
+@media (max-width:1120px){
+  body.has-final-nav .home-grid,
+  body.has-final-nav .grid,
+  body.has-final-nav .heroRow,
+  body.has-final-nav .twoCols,
+  body.site-nav-final--playlist .home-grid,
+  body.site-nav-final--playlist .grid,
+  body.site-nav-final--playlist .heroRow,
+  body.site-nav-final--playlist .twoCols{
+    grid-template-columns:1fr !important;
+  }
+  body.has-final-nav .sidepanel{
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:0 !important;
+  }
+  body.site-nav-final--playlist .sidepanel{
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:0 !important;
+  }
+  body.has-final-nav .progress-head,
+  body.has-final-nav .progress-meta-hero,
+  body.site-nav-final--playlist .progress-head,
+  body.site-nav-final--playlist .progress-meta-hero{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+  }
+}
+@media (max-width:780px){
+  body.has-final-nav .wrap,
+  body.site-nav-final--playlist .wrap{
+    width:min(100%, calc(100% - 24px)) !important;
+  }
+  body.has-final-nav .hero,
+  body.has-final-nav .section,
+  body.has-final-nav .playlist-pro-panel,
+  body.has-final-nav .playlist-rows,
+  body.has-final-nav .keep-exploring,
+  body.has-final-nav .alexia-quick-routes,
+  body.has-final-nav .surgical-support,
+  body.has-final-nav .featured-moment-dialog,
+  body.has-final-nav header,
+  body.has-final-nav footer,
+  body.site-nav-final--playlist .hero,
+  body.site-nav-final--playlist .section,
+  body.site-nav-final--playlist .playlist-pro-panel,
+  body.site-nav-final--playlist .playlist-rows,
+  body.site-nav-final--playlist .keep-exploring,
+  body.site-nav-final--playlist .alexia-quick-routes,
+  body.site-nav-final--playlist .surgical-support,
+  body.site-nav-final--playlist .featured-moment-dialog,
+  body.site-nav-final--playlist header,
+  body.site-nav-final--playlist footer{
+    border-radius:22px !important;
+  }
+  body.has-final-nav .hero,
+  body.has-final-nav .content,
+  body.has-final-nav .section,
+  body.has-final-nav .playlist-pro-panel,
+  body.has-final-nav .playlist-rows,
+  body.has-final-nav .keep-exploring,
+  body.has-final-nav .alexia-quick-routes,
+  body.has-final-nav .surgical-support,
+  body.site-nav-final--playlist .hero,
+  body.site-nav-final--playlist .content,
+  body.site-nav-final--playlist .section,
+  body.site-nav-final--playlist .playlist-pro-panel,
+  body.site-nav-final--playlist .playlist-rows,
+  body.site-nav-final--playlist .keep-exploring,
+  body.site-nav-final--playlist .alexia-quick-routes,
+  body.site-nav-final--playlist .surgical-support{
+    padding:16px !important;
+  }
+  body.has-final-nav .heroImg{
+    padding:0 !important;
+  }
+  body.has-final-nav .heroSide{
+    padding:0 !important;
+  }
+  body.site-nav-final--playlist .heroImg{
+    padding:0 !important;
+  }
+  body.site-nav-final--playlist .heroSide{
+    padding:0 !important;
+  }
+  body.has-final-nav nav{
+    justify-content:flex-start !important;
+  }
+  body.site-nav-final--playlist nav{
+    justify-content:flex-start !important;
+  }
+  body.has-final-nav .badges,
+  body.has-final-nav .topicRow,
+  body.has-final-nav .btns,
+  body.has-final-nav .filter-row,
+  body.site-nav-final--playlist .badges,
+  body.site-nav-final--playlist .topicRow,
+  body.site-nav-final--playlist .btns,
+  body.site-nav-final--playlist .filter-row{
+    flex-wrap:wrap !important;
+  }
+  body.has-final-nav .play-badge,
+  body.has-final-nav .watch-clip-btn,
+  body.has-final-nav .playlistOverlayPill,
+  body.site-nav-final--playlist .play-badge,
+  body.site-nav-final--playlist .watch-clip-btn,
+  body.site-nav-final--playlist .playlistOverlayPill{
+    max-width:calc(100% - 20px) !important;
+    white-space:normal !important;
+  }
+  body.has-final-nav .alexia-seo-h1{
+    width:min(100%, calc(100% - 24px));
+    margin-top:4px !important;
+  }
+}
+
+/* Playlist-specific block height/air normalization */
+body.site-nav-final--playlist .hero{
+  margin-top:0 !important;
+  padding:clamp(18px, 2.2vw, 28px) !important;
+  min-height:auto !important;
+}
+body.site-nav-final--playlist .playlist-pro-panel,
+body.site-nav-final--playlist .playlist-rows,
+body.site-nav-final--playlist .keep-exploring{
+  margin:0 !important;
+  padding:clamp(18px, 2.2vw, 28px) !important;
+}
+body.site-nav-final--playlist .progress-shell.progress-shell-hero,
+body.site-nav-final--playlist .progress-shell-advanced{
+  margin-top:18px !important;
+  padding:16px 18px !important;
+  border-radius:22px !important;
+}
+body.site-nav-final--playlist .playlist-pro-head,
+body.site-nav-final--playlist .playlist-row-top{
+  margin-bottom:18px !important;
+}
+body.site-nav-final--playlist .playlist-pro-panel + .playlist-rows,
+body.site-nav-final--playlist .playlist-rows + .keep-exploring,
+body.site-nav-final--playlist .hero + .playlist-pro-panel,
+body.site-nav-final--playlist .hero + .section{
+  margin-top:22px !important;
+}
+body.site-nav-final--playlist .playlist-kicker,
+body.site-nav-final--playlist .kicker,
+body.site-nav-final--playlist .playlist-hero-title,
+body.site-nav-final--playlist .playlist-hero-subtitle{
+  padding-left:0 !important;
+  padding-right:0 !important;
+}
+body.site-nav-final--playlist .playlist-hero-title,
+body.site-nav-final--playlist h1.single-line,
+body.site-nav-final--playlist .hero h1{
+  font-size:clamp(32px, 3.6vw, 52px) !important;
+  line-height:.94 !important;
+  letter-spacing:-.04em !important;
+  white-space:normal !important;
+  max-width:12ch !important;
+}
+body.site-nav-final--playlist .playlist-hero-subtitle{
+  font-size:16px !important;
+  line-height:1.58 !important;
+  max-width:62ch !important;
+}
+@media (max-width:780px){
+  body.site-nav-final--playlist .playlist-hero-title,
+  body.site-nav-final--playlist h1.single-line,
+  body.site-nav-final--playlist .hero h1{
+    max-width:100% !important;
+    font-size:clamp(30px, 9vw, 46px) !important;
+  }
+  body.site-nav-final--playlist .progress-shell.progress-shell-hero,
+  body.site-nav-final--playlist .progress-shell-advanced{
+    margin-top:16px !important;
+    padding:14px 16px !important;
+  }
+}
+
+/* Remove duplicate legacy mastheads when final nav is present */
+body.has-final-nav .masthead,
+body.site-nav-final--playlist .masthead{
+  display:none !important;
+}
+
+/* Playlist nav/frame lock: match the content shell exactly */
+body.site-nav-final--playlist{
+  --playlist-frame:1560px;
+  --playlist-gutter:56px;
+  --playlist-top-gap:44px;
+}
+body.site-nav-final--playlist .site-nav-final{
+  --site-nav-frame:var(--playlist-frame) !important;
+  width:min(var(--playlist-frame), calc(100vw - var(--playlist-gutter))) !important;
+  max-width:min(var(--playlist-frame), calc(100vw - var(--playlist-gutter))) !important;
+  margin:26px auto var(--playlist-top-gap) !important;
+}
+body.site-nav-final--playlist .wrap{
+  width:min(var(--playlist-frame), calc(100vw - var(--playlist-gutter))) !important;
+  max-width:min(var(--playlist-frame), calc(100vw - var(--playlist-gutter))) !important;
+  margin:0 auto !important;
+}
+body.site-nav-final--playlist .hero{
+  margin-top:0 !important;
+}
+@media (max-width:980px){
+  body.site-nav-final--playlist{
+    --playlist-gutter:30px;
+    --playlist-top-gap:22px;
+  }
+}
+@media (max-width:720px){
+  body.site-nav-final--playlist{
+    --playlist-gutter:24px;
+    --playlist-top-gap:18px;
+  }
+}
+
+.recommend-cta{
+  margin-top:18px !important;
+  padding:20px 18px !important;
+}
+.recommend-sub{line-height:1.58 !important}
+
+/* === BOTÓN RECOMMEND — mismo rosa fluo que unlock/jump === */
+.recommend-btn{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:14px 32px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,0,127,.55) !important;
+  background:linear-gradient(180deg,#ff007f,#ff1493) !important;
+  color:#fff !important;
+  font-weight:800 !important;
+  font-size:15px !important;
+  letter-spacing:.04em !important;
+  box-shadow:0 0 22px rgba(255,0,127,.55),0 12px 28px rgba(0,0,0,.28) !important;
+  text-decoration:none !important;
+  cursor:pointer !important;
+  animation:none !important;
+}
+.recommend-btn:hover{
+  background:linear-gradient(180deg,#ff1493,#ff69b4) !important;
+  box-shadow:0 0 32px rgba(255,0,127,.7),0 16px 34px rgba(0,0,0,.30) !important;
+}
+
+/* === JUMP TO MOST REPLAYED — centrado en su bloque === */
+.alexia-hm-actions{
+  justify-content:center !important;
+  display:flex !important;
+}
+
+/* === NETFLIX HOVER — todos los bloques principales === */
+.panel,.hero,.card,.tile,.pack,.rank-card,.model-card,.video-card,.group-card,
+.seo-intro,.alexia-hm-box,.vote-box,.clip-finder,.yt-comments,
+.alexia-quick-routes a,.model{
+  border:1px solid rgba(255,255,255,.10) !important;
+  transition:transform .22s cubic-bezier(.25,.46,.45,.94),box-shadow .22s ease !important;
+}
+.panel:hover,.hero:hover,.card:hover,.tile:hover,.pack:hover,
+.rank-card:hover,.model-card:hover,.video-card:hover,.group-card:hover,
+.seo-intro:hover,.alexia-hm-box:hover,.vote-box:hover,.clip-finder:hover{
+  transform:scale(1.015) translateY(-4px) !important;
+  box-shadow:0 32px 80px rgba(0,0,0,.42) !important;
+}
+
+/* === CONSISTENCIA: mismo aire superior y ancho en bloques principales === */
+.video-shell,.alexia-hm-box,.vote-box,.clip-finder,.yt-comments,.recommend-cta,.comment-invite-cta,.seo-intro{
+  margin-top:16px !important;
+  box-sizing:border-box !important;
+}
+.alexia-hm-box,.vote-box{
+  padding:16px 18px !important;
+}
+
+/* === ANIMACIÓN GATO ENCERRADO — unlock paid content === */
+@keyframes alexiaCatTrapped{
+  0%,100%{transform:translate(0,0) rotate(0deg) scale(1);}
+  /* Pequeños movimientos — el gato se acomoda */
+  4%{transform:translate(-2px,1px) rotate(-.3deg);}
+  6%{transform:translate(3px,-1px) rotate(.4deg);}
+  8%{transform:translate(-1px,0) rotate(-.2deg);}
+  10%{transform:translate(0,0) rotate(0deg);}
+  /* Gran golpe contra la pared izquierda */
+  38%{transform:translate(0,0) scaleX(1) scaleY(1);}
+  40%{transform:translate(-5px,0) scaleX(.94) scaleY(1.06);}
+  42%{transform:translate(6px,0) scaleX(1.07) scaleY(.95);}
+  44%{transform:translate(-4px,0) scaleX(.96) scaleY(1.04);}
+  46%{transform:translate(3px,0) scaleX(1.03) scaleY(.98);}
+  48%{transform:translate(0,0) scaleX(1) scaleY(1);}
+  /* Sacudida rápida de desesperación */
+  72%{transform:translate(0,0);}
+  73%{transform:translate(-4px,0) rotate(-.5deg);}
+  74%{transform:translate(5px,0) rotate(.6deg);}
+  75%{transform:translate(-5px,1px) rotate(-.7deg);}
+  76%{transform:translate(4px,-1px) rotate(.5deg);}
+  77%{transform:translate(-3px,0) rotate(-.3deg);}
+  78%{transform:translate(2px,0) rotate(.2deg);}
+  79%{transform:translate(0,0) rotate(0deg);}
+  /* Pequeño golpe desde abajo */
+  90%{transform:translate(0,0) scaleY(1);}
+  91%{transform:translate(0,-4px) scaleY(1.06) scaleX(.96);}
+  93%{transform:translate(0,3px) scaleY(.96) scaleX(1.04);}
+  95%{transform:translate(0,0) scaleY(1) scaleX(1);}
+}
+.paid-unlock-btn,
+a[href$="paid-content.html"],
+.replay-chip[href$="paid-content.html"]{
+  animation:alexiaCatTrapped 5.5s ease-in-out infinite !important;
+  transform-origin:center center !important;
+}
+
+/* === COMMENT-INVITE-CTA (igual estilo que recommend-cta) === */
+.comment-invite-cta{
+  margin-top:18px !important;
+  padding:20px 18px !important;
+  border-radius:24px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important;
+  box-shadow:0 18px 44px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.04) !important;
+  text-align:center !important;
+}

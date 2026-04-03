@@ -1,0 +1,7 @@
+Playlist files scanned: 506
+Files changed: 0
+Playlist index links normalized to .html: 0
+Alias redirects retargeted to .html: 0
+Autoplay init calls removed: 0
+Autoplay forced redirects disabled: 0
+Generated: 2026-04-03 13:33:32
