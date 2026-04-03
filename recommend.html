@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Name the Clip You Can't Stop Thinking About</title>
+<title>Suggest a Hot Video</title>
 <style>
   :root{--green:#86ffbe;--green-strong:#00ff88;--green-soft:rgba(0,255,136,.10);--green-border:rgba(0,255,136,.42);--panel:rgba(255,255,255,.03);--line:rgba(0,255,136,.22);--muted:rgba(255,255,255,.78);--muted2:rgba(255,255,255,.48)}
   *{box-sizing:border-box}
@@ -28,9 +28,9 @@
 </style>
 
 
-<meta name="description" content="Drop the clip that keeps living in your head and help shape the next Alexia Twerk playlist.">
-<meta property="og:title" content="Name the Clip You Can't Stop Thinking About">
-<meta property="og:description" content="Drop the clip that keeps living in your head and help shape the next Alexia Twerk playlist.">
+<meta name="description" content="Suggest a Hot Video inside  with a darker, cleaner layout and a more refined archive flow.">
+<meta property="og:title" content="Suggest a Hot Video">
+<meta property="og:description" content="Suggest a Hot Video inside  with a darker, cleaner layout and a more refined archive flow.">
 <meta property="og:url" content="https://alexiatwerkgroup.com/recommend.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -57,8 +57,8 @@ body{margin: 4px 6px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,
 <div class="panel">
     <div class="content">
       
-      <h1>Name the clip you can't stop replaying</h1>
-      <p class="sub top100-sub">Send up to 5 picks for the playlist. If your taste is dangerous enough, you might end up with a custom surprise from Alexia or one of her models.</p>
+      <h1>Suggest a Hot Video</h1>
+      <p class="sub top100-sub">Suggest up to 5 videos for the playlist. Win a monthly custom video from Alexia or one of her models.</p>
 <form id="form">
       <div class="field"><input id="email" type="email" placeholder="Your email" required></div>
       <div class="field"><input id="video1" type="text" placeholder="Video suggestion 1" required></div>
@@ -66,7 +66,7 @@ body{margin: 4px 6px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,
       <div class="field"><input id="video3" type="text" placeholder="Video suggestion 3 (optional)"></div>
       <div class="field"><input id="video4" type="text" placeholder="Video suggestion 4 (optional)"></div>
       <div class="field"><input id="video5" type="text" placeholder="Video suggestion 5 (optional)"></div>
-      <button class="submit-btn" type="submit">Send My Picks</button>
+      <button class="submit-btn" type="submit">Participate</button>
     </form>
 <div class="msg" id="msg"></div>
 <div class="links">
@@ -74,7 +74,7 @@ body{margin: 4px 6px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,
       <a class="nav-btn" href="/">Back to home</a>
       <a class="nav-btn" href="/recommended-videos.html">Top suggested videos</a>
     </div>
-<div class="note">One email. One shot. Make it count.</div>
+<div class="note">One email = one entry.</div>
     </div>
   </div>
 </div>
@@ -99,13 +99,13 @@ body{margin: 4px 6px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,
       if (error) {
         const text = (error.message || '').toLowerCase();
         if (text.includes('duplicate') || text.includes('unique') || text.includes('sorteo_entries_email_unique')) {
-          msg.textContent = 'This email is already in the draw.';
+          msg.textContent = 'This email is already participating in the draw.';
         } else {
-          msg.textContent = 'Something slipped. Try again in a moment.';
+          msg.textContent = 'There was an error submitting your entry.';
         }
         return;
       }
-      msg.textContent = "You are in. Now let's see if your taste gets rewarded.";
+      msg.textContent = 'You are now participating in the monthly custom video draw.';
       form.reset();
     });
   </script>
@@ -115,4 +115,3 @@ body{margin: 4px 6px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,
 <script defer src="/assets/premium-polish-v10.js"></script>
 <script defer src="/assets/online-count-global.js"></script>
 </body>
-

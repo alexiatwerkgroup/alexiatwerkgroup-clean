@@ -1,5 +1,0 @@
-﻿Playlist internal link normalization report
-Files scanned: 506
-Files changed: 1
-Href rewrites: 293
-JSON filename rewrites: 0

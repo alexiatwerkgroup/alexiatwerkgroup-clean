@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -18,9 +18,9 @@
   .btn{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:12px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(145deg,rgba(0,255,170,.18),rgba(0,255,170,.06));color:#fff;text-decoration:none;font-weight:800;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<meta name="description" content="Account confirmation inside Alexia Twerk Group with a cleaner, calmer finish.">
+<meta name="description" content="Account confirmation inside Alexia Twerk Group with a darker, cleaner layout and a more refined archive flow.">
 <meta property="og:title" content="Account confirmation | Alexia Twerk Group">
-<meta property="og:description" content="Account confirmation inside Alexia Twerk Group with a cleaner, calmer finish.">
+<meta property="og:description" content="Account confirmation inside Alexia Twerk Group with a darker, cleaner layout and a more refined archive flow.">
 <meta property="og:url" content="https://alexiatwerkgroup.com/auth-callback.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
@@ -43,7 +43,7 @@
     <div class="kicker">Alexia Twerk Group</div>
     <h1>Confirming your account</h1>
     <p>We are finishing your sign-in and sending you back to the same video so your comment flow can continue cleanly.</p>
-    <div id="status" class="status">Workingâ€¦</div>
+    <div id="status" class="status">Working…</div>
     <a id="fallback" class="btn" href="/">Go to home</a>
   </div>
 <script>
@@ -64,7 +64,7 @@
       await new Promise(r => setTimeout(r, 150));
       const { data } = await client.auth.getSession();
       if (data && data.session) {
-        setStatus('Account confirmed. Redirecting you back to your videoâ€¦', 'ok');
+        setStatus('Account confirmed. Redirecting you back to your video…', 'ok');
         setTimeout(function(){ location.replace(returnTo); }, 900);
         return;
       }

@@ -1,6 +1,0 @@
-﻿Playlist black-screen repair report
-Files scanned: 506
-Files changed: 315
-CSS path fixes: 315
-JS path fixes: 315
-Extra brace fixes: 312
