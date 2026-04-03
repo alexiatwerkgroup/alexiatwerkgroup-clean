@@ -1,4 +1,1 @@
-/playlist/index.html /playlist/index.html 200
-/playlist/:slug/ /playlist/:slug.html 200
-/playlist/:slug /playlist/:slug.html 200
 /playlist /playlist/index.html 200
