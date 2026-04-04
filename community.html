@@ -520,6 +520,112 @@ body{margin:0!important;}
   }
 }
 </style>
+<style id="community-final-fixes-v5">
+.leaderboard-list{display:grid!important;gap:16px!important}
+.rank-line{
+  min-height:214px!important;
+  height:214px!important;
+  grid-template-columns:76px minmax(0,1fr)!important;
+  gap:18px!important;
+  align-items:stretch!important;
+  padding:20px 18px!important;
+  border-radius:22px!important;
+}
+.rank-slot{
+  width:76px!important;
+  height:76px!important;
+  min-width:76px!important;
+  min-height:76px!important;
+  border-radius:20px!important;
+  font-size:20px!important;
+  align-self:center!important;
+}
+.rank-main{
+  min-width:0!important;
+  height:100%!important;
+  display:grid!important;
+  grid-template-rows:auto auto 1fr!important;
+  gap:12px!important;
+  align-content:stretch!important;
+  padding-bottom:4px!important;
+}
+.rank-label{
+  font-size:11px!important;
+  letter-spacing:.14em!important;
+}
+.rank-topline{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  row-gap:10px!important;
+  align-items:start!important;
+}
+.rank-name-wrap{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  min-width:0!important;
+  flex-wrap:wrap!important;
+}
+.rank-topline strong{
+  display:block!important;
+  min-width:0!important;
+  max-width:none!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  font-size:20px!important;
+  line-height:1.16!important;
+}
+.rank-trend{
+  flex:0 0 auto!important;
+  padding:8px 13px!important;
+  font-size:12px!important;
+}
+.rank-metric{
+  align-self:start!important;
+  justify-self:start!important;
+  font-size:16px!important;
+  line-height:1.16!important;
+  text-align:left!important;
+  white-space:nowrap!important;
+}
+.rank-meta{
+  margin-top:auto!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  gap:10px!important;
+  row-gap:10px!important;
+  padding-bottom:2px!important;
+}
+.rank-meta > span:not(.presence-inline),
+.rank-meta > .presence-inline{
+  min-height:34px!important;
+  padding:7px 12px!important;
+  font-size:12px!important;
+}
+@media (max-width:1100px){
+  .rank-line{
+    min-height:196px!important;
+    height:196px!important;
+  }
+}
+@media (max-width:760px){
+  .rank-line{
+    min-height:unset!important;
+    height:auto!important;
+    grid-template-columns:68px minmax(0,1fr)!important;
+    gap:14px!important;
+    padding:18px 16px!important;
+  }
+  .rank-slot{
+    width:68px!important;
+    height:68px!important;
+    min-width:68px!important;
+    min-height:68px!important;
+  }
+}
+</style>
 </head>
 <body class="has-final-nav community-page">
 <div class="site-nav-final"><div class="site-nav-final__inner"><nav class="site-nav-final__links" aria-label="Main"><a href="/home.html">Home</a><a href="/playlist/">Playlist</a><a href="/community.html" class="is-active">Community</a><a href="/top-100-twerk-videos.html">Top 100</a><a href="/best-twerk-dancers.html">Best Dancers</a><a href="/alexia-video-packs.html">Video Packs</a><a href="/profile.html">Profile</a></nav><div class="site-nav-final__online"><span class="site-nav-final__dot" aria-hidden="true"></span><span>ONLINE NOW</span><span data-alexia-online-count>891</span></div></div></div>
@@ -876,4 +982,5 @@ body{margin:0!important;}
 <script defer src="/assets/online-count-global.js"></script>
 <script defer src="/assets/profile-modal-live-sync.js"></script>
 </body>
+
 
