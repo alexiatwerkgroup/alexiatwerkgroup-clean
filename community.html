@@ -973,7 +973,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
     if(hours > 0) return `${hours}h ${minutes}m`;
     return `${minutes}m`;
   }
-  function openModal(item){ const modal = $('#community-profile-modal'); const box = modal.querySelector('.modal-body'); box.innerHTML = `<div class="modal-head">${avatar(item.username, item.user_id, item.tier).replace('avatar','profile-avatar')}<div><div class="kicker">Community profile</div><h3>${esc(item.username)}</h3><div class="badge tier-${item.tier}">${esc(item.badge)}</div>${presenceBadge(item)}<p>${esc((item.profile && item.profile.bio) || 'No public bio yet.')}</p></div></div><div class="grid"><div class="stat"><strong>${item.activity_score||0}</strong><span>Activity score</span></div><div class="stat"><strong>${formatDuration(item.total_time_seconds)}</strong><span>Total time</span></div><div class="stat"><strong>${item.total_videos_watched||0}</strong><span>Videos watched</span></div><div class="stat"><strong>${item.comments}</strong><span>Comments</span></div></div><div class="panel"><h4>Comment history</h4>${history(item)}</div>`; modal.classList.add('open'); }
+  function openModal(item){ const modal = $('#community-profile-modal'); const box = modal.querySelector('.modal-body'); box.innerHTML = `<div class="modal-head">${avatar(item.username, item.user_id, item.tier).replace('avatar','profile-avatar')}<div><div class="kicker">Community profile</div><h3>${esc(item.username)}</h3><div class="badge tier-${item.tier}">${esc(item.badge)}</div>${presenceBadge(item)}<p>${esc((item.profile && item.profile.bio) || 'No public bio yet.')}</p></div></div><div class="grid"><div class="stat"><strong>${item.activity_score||0}</strong><span>Score</span></div><div class="stat"><strong>${formatDuration(item.total_time_seconds)}</strong><span>Watch time</span></div><div class="stat"><strong>${item.total_videos_watched||0}</strong><span>Videos</span></div><div class="stat"><strong>${item.comments}</strong><span>Comments</span></div></div><div class="panel"><h4>Comment history</h4>${history(item)}</div>`; modal.classList.add('open'); }
   async function boot(){
     try{
       const users = await fetchAll();
@@ -1036,6 +1036,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
 <script defer src="/assets/online-count-global.js"></script>
 <script defer src="/assets/profile-modal-live-sync.js"></script>
 </body>
+
 
 
 
