@@ -731,3 +731,41 @@ body.site-nav-final--playlist .wrap{--ax-page-frame:var(--ax-shell-1220);}
   body.site-nav-final--playlist .mini-rail,
   body.site-nav-final--playlist .keep-grid{gap:14px !important;}
 }
+
+/* profile + community widened to match top100 */
+body.has-final-nav.profile-page .site-nav-final,
+body.has-final-nav.community-page .site-nav-final{
+  --ax-nav-frame-width:1184px !important;
+}
+body.profile-page .wrap,
+body.community-page .wrap{
+  max-width:1220px !important;
+  width:min(1184px, calc(100% - 48px)) !important;
+}
+body.profile-page .hero,
+body.profile-page .panel,
+body.community-page .hero,
+body.community-page .content-shell,
+body.community-page .section,
+body.community-page .triple-rank-grid{
+  max-width:1184px !important;
+  width:100% !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+body.profile-page .sub,
+body.community-page .hero p{
+  max-width:880px !important;
+}
+@media (max-width:1100px){
+  body.profile-page .wrap,
+  body.community-page .wrap{
+    width:min(1184px, calc(100% - 36px)) !important;
+  }
+}
+@media (max-width:760px){
+  body.profile-page .wrap,
+  body.community-page .wrap{
+    width:min(1184px, calc(100% - 28px)) !important;
+  }
+}
