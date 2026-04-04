@@ -187,6 +187,7 @@
   var pendingVideoWatchSeconds = 0;
   var pendingScore = 0;
   var scoreSecondBucket = 0;
+  var activeVideoPageSeconds = 0;
   var markedViewed = !!state.viewedVideos[videoSlug];
   var flushPromise = null;
   var flushRequested = false;
@@ -409,9 +410,15 @@
     return 30;
   }
 
-  async function markVideoViewed(force){
+  async function markVideoViewed(force, allowActiveFallback){
     if (!videoLikePage || markedViewed) return;
-    if (!force && playback.watchSeconds < getViewThresholdSeconds(playback.durationSeconds)) return;
+    if (!force) {
+      var playbackThreshold = getViewThresholdSeconds(playback.durationSeconds);
+      var fallbackThreshold = Math.min(playbackThreshold, 12);
+      var qualifiedByPlayback = playback.watchSeconds >= playbackThreshold;
+      var qualifiedByFallback = !!allowActiveFallback && activeVideoPageSeconds >= fallbackThreshold;
+      if (!qualifiedByPlayback && !qualifiedByFallback) return;
+    }
 
     markedViewed = true;
     state.viewedVideos[videoSlug] = nowIso();
@@ -448,7 +455,7 @@
       pendingVideoWatchSeconds += delta;
       playback.watchSeconds += delta;
       if (!markedViewed && playback.watchSeconds >= getViewThresholdSeconds(playback.durationSeconds)) {
-        markVideoViewed(false);
+        markVideoViewed(false, false);
       }
     },
     resetClock: function(current){
@@ -671,6 +678,12 @@
     if (!isHumanActive()) return;
     pendingSiteSeconds += Math.round(SITE_TICK_MS / 1000);
     scoreSecondBucket += Math.round(SITE_TICK_MS / 1000);
+    if (videoLikePage && !markedViewed) {
+      activeVideoPageSeconds += Math.round(SITE_TICK_MS / 1000);
+      if (activeVideoPageSeconds >= Math.min(getViewThresholdSeconds(playback.durationSeconds), 12)) {
+        markVideoViewed(false, true);
+      }
+    }
     if (scoreSecondBucket >= SCORE_TICK_SECONDS) {
       var scoreUnits = Math.floor(scoreSecondBucket / SCORE_TICK_SECONDS);
       pendingScore += scoreUnits * SCORE_PER_ACTIVE_TICK;
