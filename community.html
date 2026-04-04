@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -698,9 +698,9 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
   <section class="section reveal">
     <div class="section-head section-head--hidden"><div><h2>Community leaderboard</h2><p><span id="community-count-mirror">0</span> ranked users found so far.</p></div></div>
     <div class="triple-rank-grid">
-      <div class="leaderboard-column" id="rank-most-active"><div class="empty">Loadingâ€¦</div></div>
-      <div class="leaderboard-column" id="rank-most-watched"><div class="empty">Loadingâ€¦</div></div>
-      <div class="leaderboard-column" id="rank-top-commenters"><div class="empty">Loadingâ€¦</div></div>
+      <div class="leaderboard-column" id="rank-most-active"><div class="empty">Loading…</div></div>
+      <div class="leaderboard-column" id="rank-most-watched"><div class="empty">Loading…</div></div>
+      <div class="leaderboard-column" id="rank-top-commenters"><div class="empty">Loading…</div></div>
     </div>
   </section>
 </div>
@@ -708,7 +708,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
     </div>
   </div>
 </div>
-<div class="modal" id="community-profile-modal"><div class="modal-card"><button class="close" type="button" data-close-modal>Ã—</button><div class="modal-body"></div></div></div>
+<div class="modal" id="community-profile-modal"><div class="modal-card"><button class="close" type="button" data-close-modal>×</button><div class="modal-body"></div></div></div>
 <script>
 (function(){
   const SUPABASE_URL = 'https://vieqniahusdrfkpcuqsn.supabase.co';
@@ -747,7 +747,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
     return '<1 min';
   }
   function presenceBadge(item){ return '<span class="presence-inline"><span class="presence-dot '+(isOnline(item.last_seen)?'online':'offline')+'"></span><span>'+esc(ago(item.last_seen))+'</span></span>'; }
-  function medalForRank(rank){ if (rank === 1) return { icon:'ðŸ‘‘', label:'Crown leader', cls:'rank-1' }; if (rank === 2) return { icon:'ðŸ¥ˆ', label:'Second place', cls:'rank-2' }; if (rank === 3) return { icon:'ðŸ¥‰', label:'Third place', cls:'rank-3' }; return { icon:'âœ¦', label:'Community member', cls:'' }; }
+  function medalForRank(rank){ if (rank === 1) return { icon:'👑', label:'Crown leader', cls:'rank-1' }; if (rank === 2) return { icon:'🥈', label:'Second place', cls:'rank-2' }; if (rank === 3) return { icon:'🥉', label:'Third place', cls:'rank-3' }; return { icon:'✦', label:'Community member', cls:'' }; }
   function rep(stat){ const streak=Number(stat.streak||0); const points=stat.comments*10 + stat.likes*4 + stat.recent*2 + streak*3; let badge='Fresh voice', tier=1; if(points>=320){badge='Hall of heat';tier=4}else if(points>=170){badge='Crowd magnet';tier=3}else if(points>=70){badge='Rising heat';tier=2} return {points,badge,tier,streak}; }
   function avatar(name, userId, tier){ const pref = userId ? profilePrefs(userId) : {}; const tierClass = tier ? ' tier-' + tier : ''; if (pref.avatar_url) return '<span class="avatar img'+tierClass+'"><img src="'+esc(pref.avatar_url)+'" alt="'+esc(name)+'"></span>'; return '<span class="avatar'+tierClass+'">'+esc((String(name||'G')[0]||'G').toUpperCase())+'</span>'; }
   function prettySlug(slug){ try{ var s=String(slug||'').replace('/playlist/','').replace(/\.html$/i,''); try{s=decodeURIComponent(s)}catch(e){} try{s=s.normalize('NFKD').replace(/[\u0300-\u036f]/g,'')}catch(e){} s=s.replace(/[\-_]+/g,' ').replace(/\s+/g,' ').trim(); return s ? s.toUpperCase() : 'VIDEO'; }catch(e){ return 'VIDEO'; } }
@@ -901,17 +901,17 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
       const previousMove = prevMoves[item.key] || null;
       if(!prev){
         const hadPrev = !!(prevMap && Object.keys(prevMap).length);
-        next[item.key] = previousMove || (hadPrev ? { cls:'up', arrow:'â–²', text:'NEW' } : { cls:'same', arrow:'â€¢', text:'Same' });
+        next[item.key] = previousMove || (hadPrev ? { cls:'up', arrow:'▲', text:'NEW' } : { cls:'same', arrow:'•', text:'Same' });
       } else if(prev > slot){
         const diff = prev - slot;
         const carry = previousMove && previousMove.cls === 'up' ? numericTrendValue(previousMove) : 0;
-        next[item.key] = { cls:'up', arrow:'â–²', text:'+' + (carry + diff) };
+        next[item.key] = { cls:'up', arrow:'▲', text:'+' + (carry + diff) };
       } else if(prev < slot){
         const diff = slot - prev;
         const carry = previousMove && previousMove.cls === 'down' ? numericTrendValue(previousMove) : 0;
-        next[item.key] = { cls:'down', arrow:'â–¼', text:'-' + (carry + diff) };
+        next[item.key] = { cls:'down', arrow:'▼', text:'-' + (carry + diff) };
       } else {
-        next[item.key] = previousMove || { cls:'same', arrow:'â€¢', text:'Same' };
+        next[item.key] = previousMove || { cls:'same', arrow:'•', text:'Same' };
       }
     });
     return next;
@@ -924,11 +924,11 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
     const prev = prevMap && item && item.key ? Number(prevMap[item.key]) || null : null;
     if(!prev){
       const hadPrev = !!(prevMap && Object.keys(prevMap).length);
-      return hadPrev ? { cls:'up', arrow:'â–²', text:'NEW' } : { cls:'same', arrow:'â€¢', text:'Same' };
+      return hadPrev ? { cls:'up', arrow:'▲', text:'NEW' } : { cls:'same', arrow:'•', text:'Same' };
     }
-    if(prev > slot) return { cls:'up', arrow:'â–²', text:'+' + (prev - slot) };
-    if(prev < slot) return { cls:'down', arrow:'â–¼', text:'-' + (slot - prev) };
-    return { cls:'same', arrow:'â€¢', text:'Same' };
+    if(prev > slot) return { cls:'up', arrow:'▲', text:'+' + (prev - slot) };
+    if(prev < slot) return { cls:'down', arrow:'▼', text:'-' + (slot - prev) };
+    return { cls:'same', arrow:'•', text:'Same' };
   }
   function trendBadge(item, slot, type, snapshots, movementState){
     const t = trendFor(item, slot, type, snapshots, movementState);
@@ -965,7 +965,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
     }
     el.innerHTML = `<div class="leaderboard-head"><div><h3>${esc(title)}</h3><p>${esc(subtitle)}</p></div><span class="leaderboard-pill">${esc(pill)}</span></div><div class="leaderboard-list">${top10.map((item,i)=>lineCard(item,i+1,type,false,snapshots,movementState)).join('')}${selfHtml}</div>`;
   }
-  function history(item){ return item.history.length ? item.history.map(row => `<div class="history-item"><div class="meta">${esc(prettySlug(row.page_slug))} â€¢ ${(function(ts){ const ms = Date.parse(ts||'')||Date.now(); const diff = Math.max(1, Math.floor((Date.now()-ms)/1000)); if(diff<60) return 'just now'; const mins=Math.floor(diff/60); if(mins<60) return mins+'h ago'.replace('h', 'm'); const hrs=Math.floor(mins/60); if(hrs<24) return hrs+'h ago'; return Math.floor(hrs/24)+'d ago'; })(row.created_at)} â€¢ ${Number(row.likes_count||0)} likes</div><div>${esc(row.body)}</div></div>`).join('') : '<div class="history-item">No comments yet.</div>'; }
+  function history(item){ return item.history.length ? item.history.map(row => `<div class="history-item"><div class="meta">${esc(prettySlug(row.page_slug))} • ${(function(ts){ const ms = Date.parse(ts||'')||Date.now(); const diff = Math.max(1, Math.floor((Date.now()-ms)/1000)); if(diff<60) return 'just now'; const mins=Math.floor(diff/60); if(mins<60) return mins+'h ago'.replace('h', 'm'); const hrs=Math.floor(mins/60); if(hrs<24) return hrs+'h ago'; return Math.floor(hrs/24)+'d ago'; })(row.created_at)} • ${Number(row.likes_count||0)} likes</div><div>${esc(row.body)}</div></div>`).join('') : '<div class="history-item">No comments yet.</div>'; }
   function formatDuration(totalSeconds){
     const secs = Math.max(0, Number(totalSeconds || 0) || 0);
     const hours = Math.floor(secs / 3600);
@@ -990,7 +990,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
         watched: computeMovementState('watched', mostWatched, snapshots, storedMovements),
         comments: computeMovementState('comments', topCommenters, snapshots, storedMovements)
       };
-      leaderboardSection('#rank-most-active','Most active members','Based on score, total accumulated time and watched videos.','Live score',active,current,'active',snapshots,movementState);
+      leaderboardSection('#rank-most-active','Most active members','Based on score, total time and watched videos.','Live score',active,current,'active',snapshots,movementState);
       leaderboardSection('#rank-most-watched','Most videos watched','Driven by your viewing stats and user totals.','Viewing rank',mostWatched,current,'watched',snapshots,movementState);
       leaderboardSection('#rank-top-commenters','Top commenters','Pure comment dominance across the community.','Comment rank',topCommenters,current,'comments',snapshots,movementState);
       writeRankMovements(movementState);
@@ -1036,6 +1036,7 @@ body.community-page .presence-inline{display:inline-flex!important;align-items:c
 <script defer src="/assets/online-count-global.js"></script>
 <script defer src="/assets/profile-modal-live-sync.js"></script>
 </body>
+
 
 
 
