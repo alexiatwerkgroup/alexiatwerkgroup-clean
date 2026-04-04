@@ -134,12 +134,12 @@
 }
 </style>
 <style id="playlist-nowrap-pills-patch">
-#playlist-hero-badges{display:flex;flex-wrap:nowrap!important;align-items:center;gap:8px;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
+#playlist-hero-badges{display:flex;flex-wrap:nowrap!important;align-items:center;gap:12px;overflow-x:auto;overflow-y:hidden;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
 #playlist-hero-badges::-webkit-scrollbar{display:none}
 #playlist-hero-badges > *{flex:0 0 auto;white-space:nowrap}
 #playlist-hero-badges .badge,
-#playlist-hero-badges .badge-btn{font-size:13px}
-#playlist-hero-badges .streak-badge span{white-space:nowrap;font-size:11px}#playlist-hero-badges .streak-badge strong{font-size:15px}
+#playlist-hero-badges .badge-btn{font-size:14px}
+#playlist-hero-badges .streak-badge span{white-space:nowrap}
 </style>
 <style id="playlist-pro-upgrade-style">
 .playlist-pro-panel{margin: 4px 6px;padding:18px 18px 16px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 80px rgba(0,0,0,.28)}
@@ -1957,7 +1957,7 @@ html, body, main, .wrap, .home-grid{
 <div aria-labelledby="featured-moment-title" aria-modal="true" class="featured-moment-dialog" role="dialog">
 <div class="featured-moment-head">
 <div class="featured-moment-copy">
-<h3 id="featured-moment-title">🔥 Hot moment</h3>
+<h3 id="featured-moment-title">🔥 Hottest moment</h3>
 <p>Azotame - Noni V | Debii Choreography. Tight tops, tiny shorts, and a stretch that feels almost accidental... or maybe not. Watch from 1:25 and stay for the next 30 seconds.</p>
 </div>
 <button aria-label="Close" class="featured-moment-close" id="featured-moment-close" type="button">✕</button>
@@ -2302,7 +2302,7 @@ html, body, main, .wrap, .home-grid{
 <div class="progress-line"><span class="progress-fill" id="playlist-progress-fill-hero"></span></div>
 <p class="progress-note">Replay-heavy pages unlock faster when you keep opening related clips.</p>
 <div class="badges badges-actions" id="playlist-hero-badges">
-<div class="badge streak-badge" id="playlist-streak-badge">🔥 <strong>Streak 0</strong> <span>start exploring</span></div>
+<div class="badge streak-badge" id="playlist-streak-badge">🔥 <strong>Streak 0</strong> <span>inside playlist</span></div>
 <div class="badge">📋 Next drop soon</div>
 <div class="badge">💃 275 hot pages</div>
 <button class="badge badge-btn" id="surprise-me-btn" type="button">🎲 Surprise me</button>
@@ -6553,7 +6553,7 @@ function updatePlaylistStreakBadge() {
   const badge = document.getElementById('playlist-streak-badge');
   if (!badge) return;
   const state = getPlaylistStreak();
-  badge.innerHTML = `🔥 <strong>Streak ${state.count}</strong> inside playlist`;
+  badge.innerHTML = `🔥 <strong>Streak ${state.count}</strong> deep inside the playlist`;
 }
 
 function rememberRecentVote(slug) {
@@ -6784,10 +6784,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       const span=streakBadge.querySelector('span');
       if(strong) strong.textContent='Streak '+streakCount;
       if(span){
-        if(streakCount >= 10) span.textContent='inside playlist';
+        if(streakCount >= 10) span.textContent='deep inside the playlist';
         else if(streakCount >= 5) span.textContent='you are on a roll';
         else if(streakCount >= 2) span.textContent='keep opening clips';
-        else span.textContent='start exploring';
+        else span.textContent='inside playlist';
       }
     }
   }
