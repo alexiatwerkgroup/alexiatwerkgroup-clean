@@ -427,3 +427,15 @@ a[href$="paid-content.html"],
   text-align:center !important;
 }
 
+
+/* final nav to first-block alignment */
+body.has-final-nav .wrap,
+body.site-nav-final--playlist .wrap{box-sizing:border-box !important;}
+body.has-final-nav .wrap > :first-child,
+body.site-nav-final--playlist .wrap > :first-child{
+  width:100% !important;
+  max-width:100% !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+  box-sizing:border-box !important;
+}
