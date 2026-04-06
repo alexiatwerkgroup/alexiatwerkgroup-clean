@@ -12,6 +12,10 @@
   const REWIND_THRESHOLD = -2;
   const FORWARD_SEEK_THRESHOLD = 3;
   const END_GUARD_SECONDS = 2;
+  const FETCH_PAGE_SIZE = 1000;
+  const MAX_FETCH_ROWS = 12000;
+  const PEAK_MIN_SECOND = 8;
+  const PEAK_NEIGHBOR_RADIUS = 3;
 
   const iframe = document.getElementById('main-video-player') || document.querySelector('.embed iframe');
   const nativeVideo = document.querySelector('.embed video, .player video, video');
@@ -78,19 +82,15 @@
     const s = sizeCanvas();
     ctx.clearRect(0, 0, s.w, s.h);
 
-    const exactCounts = new Map();
-    (seconds || []).forEach(sec => {
-      sec = Number(sec) || 0;
-      if (sec >= 0) exactCounts.set(sec, (exactCounts.get(sec) || 0) + 1);
-    });
-
     const duration = Math.max(1, timelineDuration || (seconds && seconds.length ? Math.max.apply(null, seconds) : 1));
     const safeMax = Math.max(1, duration);
+    const exactCounts = new Array(safeMax + 1).fill(0);
     const buckets = Array.from({ length: BUCKETS }, () => ({ count:0, sum:0 }));
 
     (seconds || []).forEach(sec => {
       sec = Number(sec) || 0;
       if (sec < 0 || sec > safeMax + 10) return;
+      if (sec <= safeMax) exactCounts[sec] = (exactCounts[sec] || 0) + 1;
       const idx = Math.max(0, Math.min(BUCKETS - 1, Math.floor((sec / safeMax) * BUCKETS)));
       buckets[idx].count += 1;
       buckets[idx].sum += sec;
@@ -127,29 +127,61 @@
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    let topCount = 0;
-    let topSecond = null;
-    exactCounts.forEach((count, sec) => {
-      if (count > topCount || (count === topCount && topSecond !== null && sec < topSecond)) {
-        topCount = count;
-        topSecond = sec;
-      } else if (count > topCount) {
-        topCount = count;
-        topSecond = sec;
-      }
-    });
+    let bestSecond = null;
+    let bestProminence = 0;
+    let bestCount = 0;
+    const minSec = Math.min(safeMax, Math.max(PEAK_MIN_SECOND, START_GUARD_SECONDS + 1));
+    const maxSec = Math.max(minSec, safeMax - END_GUARD_SECONDS);
 
-    if (topSecond === null || topCount <= 0) {
+    for (let sec = minSec; sec <= maxSec; sec++) {
+      const center = exactCounts[sec] || 0;
+      if (!center) continue;
+
+      let neighborSum = 0;
+      let neighborCount = 0;
+      for (let off = -PEAK_NEIGHBOR_RADIUS; off <= PEAK_NEIGHBOR_RADIUS; off++) {
+        if (!off) continue;
+        const idx = sec + off;
+        if (idx < 0 || idx > safeMax) continue;
+        neighborSum += exactCounts[idx] || 0;
+        neighborCount += 1;
+      }
+
+      const neighborAvg = neighborCount ? (neighborSum / neighborCount) : 0;
+      const prominence = center - neighborAvg;
+      if (prominence <= 0) continue;
+
+      if (
+        prominence > bestProminence ||
+        (prominence === bestProminence && center > bestCount) ||
+        (prominence === bestProminence && center === bestCount && (bestSecond === null || sec < bestSecond))
+      ) {
+        bestProminence = prominence;
+        bestCount = center;
+        bestSecond = sec;
+      }
+    }
+
+    if (bestSecond === null) {
+      for (let sec = minSec; sec <= maxSec; sec++) {
+        const center = exactCounts[sec] || 0;
+        if (center > bestCount || (center === bestCount && center > 0 && (bestSecond === null || sec < bestSecond))) {
+          bestCount = center;
+          bestSecond = sec;
+        }
+      }
+    }
+
+    if (bestSecond === null || bestCount <= 0) {
       peakSecond = null;
       if (jumpBtn) jumpBtn.style.display = 'none';
       return;
     }
 
-    peakSecond = Math.max(1, Math.min(safeMax, Math.round(topSecond)));
+    peakSecond = Math.max(1, Math.min(safeMax, Math.round(bestSecond)));
     const peakX = (peakSecond / Math.max(safeMax, 1)) * s.w;
-
-    let peakBucketIdx = Math.max(0, Math.min(BUCKETS - 1, Math.floor((peakSecond / safeMax) * BUCKETS)));
-    let peakVal = counts[peakBucketIdx] || topCount;
+    const peakBucketIdx = Math.max(0, Math.min(BUCKETS - 1, Math.floor((peakSecond / safeMax) * BUCKETS)));
+    const peakVal = counts[peakBucketIdx] || bestCount;
     const peakY = baseY - ((peakVal / maxCount) * (s.h - 16));
 
     ctx.fillStyle = 'rgba(255,228,208,.98)';
@@ -234,16 +266,29 @@
 
     loading = true;
     try {
-      const { data, error } = await client
-        .from('video_heatmap')
-        .select('second')
-        .eq('video_id', videoId)
-        .order('id', { ascending: true })
-        .limit(5000);
+      let allRows = [];
+      let from = 0;
 
-      if (error) throw error;
+      while (from < MAX_FETCH_ROWS) {
+        const to = Math.min(from + FETCH_PAGE_SIZE - 1, MAX_FETCH_ROWS - 1);
+        const { data, error } = await client
+          .from('video_heatmap')
+          .select('id,second')
+          .eq('video_id', videoId)
+          .order('id', { ascending: false })
+          .range(from, to);
 
-      const secs = (data || []).map(r => Number(r.second) || 0).filter(sec => sec >= 0);
+        if (error) throw error;
+        const rows = data || [];
+        if (!rows.length) break;
+
+        allRows = allRows.concat(rows);
+        if (rows.length < FETCH_PAGE_SIZE) break;
+        from += FETCH_PAGE_SIZE;
+      }
+
+      allRows.reverse();
+      const secs = allRows.map(r => Number(r.second) || 0).filter(sec => sec >= 0);
       timelineDuration = Math.max(timelineDuration, getDuration(), secs.length ? Math.max.apply(null, secs) : 0);
 
       if (!secs.length) {

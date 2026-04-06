@@ -1,28 +1,17 @@
 (function(){
   'use strict';
 
-  if (window.__alexiaProfileTrackerStarted) return;
-  window.__alexiaProfileTrackerStarted = true;
-
   var SUPABASE_URL = 'https://vieqniahusdrfkpcuqsn.supabase.co';
   var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZXFuaWFodXNkcmZrcGN1cXNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MTk2NjksImV4cCI6MjA4ODk5NTY2OX0.Ox8gUp0g-aYRvI2Zj6PWxx5unO3m3sEtal0OKLvPSkQ';
 
   var STORAGE_USER_ID = 'alexia_profile_user_id_v1';
   var STORAGE_STATE = 'alexia_profile_state_v2';
-
-  var SITE_TICK_MS = 5000;
-  var FLUSH_INTERVAL_MS = 15000;
-  var ACTIVITY_WINDOW_MS = 30000;
-  var SCORE_TICK_SECONDS = 15;
+  var ACTIVE_TICK_MS = 15000;
+  var WATCH_THRESHOLD_SECONDS = 12;
   var SCORE_PER_ACTIVE_TICK = 1;
   var SCORE_PER_VIDEO = 5;
-  var MAX_PROGRESS_DELTA_SECONDS = 3.5;
 
-  function safeNumber(value){
-    return Number(value || 0) || 0;
-  }
-
-  function ensureLocalUserId(){
+  function ensureUserId(){
     try {
       var id = localStorage.getItem(STORAGE_USER_ID);
       if (!id) {
@@ -31,696 +20,380 @@
         localStorage.setItem(STORAGE_USER_ID, id);
       }
       return id;
-    } catch (e) {
+    } catch(e) {
       return 'u_fallback_' + Date.now();
     }
   }
 
-  function normalizeState(raw){
-    raw = raw && typeof raw === 'object' ? raw : {};
-    raw.viewedVideos = raw.viewedVideos && typeof raw.viewedVideos === 'object' ? raw.viewedVideos : {};
-    raw.stats = raw.stats && typeof raw.stats === 'object' ? raw.stats : {};
-    raw.meta = raw.meta && typeof raw.meta === 'object' ? raw.meta : {};
-
-    raw.stats.total_time_seconds = safeNumber(raw.stats.total_time_seconds);
-    raw.stats.video_watch_seconds = safeNumber(raw.stats.video_watch_seconds);
-    raw.stats.total_videos_watched = safeNumber(raw.stats.total_videos_watched || raw.stats.videos_viewed_count);
-    raw.stats.videos_viewed_count = safeNumber(raw.stats.videos_viewed_count || raw.stats.total_videos_watched);
-    raw.stats.score = safeNumber(raw.stats.score);
-    raw.stats.updated_at = String(raw.stats.updated_at || raw.stats.last_update || '');
-    raw.meta.local_user_id = String(raw.meta.local_user_id || '');
-    raw.meta.user_id = String(raw.meta.user_id || '');
-    raw.meta.last_remote_sync_at = String(raw.meta.last_remote_sync_at || '');
-
-    return raw;
-  }
-
   function loadState(){
     try {
-      return normalizeState(JSON.parse(localStorage.getItem(STORAGE_STATE) || '{}'));
-    } catch (e) {
-      return normalizeState({});
+      var raw = JSON.parse(localStorage.getItem(STORAGE_STATE) || '{}') || {};
+      if (!raw.viewedVideos || typeof raw.viewedVideos !== 'object') raw.viewedVideos = {};
+      if (!raw.stats || typeof raw.stats !== 'object') raw.stats = {};
+      raw.stats.total_time_seconds = Number(raw.stats.total_time_seconds || 0) || 0;
+      raw.stats.total_videos_watched = Number(raw.stats.total_videos_watched || raw.stats.videos_viewed_count || 0) || 0;
+      raw.stats.videos_viewed_count = Number(raw.stats.videos_viewed_count || raw.stats.total_videos_watched || 0) || 0;
+      raw.stats.score = Number(raw.stats.score || 0) || 0;
+      return raw;
+    } catch(e) {
+      return {
+        viewedVideos: {},
+        stats: { total_time_seconds: 0, total_videos_watched: 0, videos_viewed_count: 0, score: 0 }
+      };
     }
   }
 
   function saveState(state){
+    try { localStorage.setItem(STORAGE_STATE, JSON.stringify(state || {})); } catch(e) {}
+  }
+
+
+  function emitProfileCacheUpdate(){
     try {
-      localStorage.setItem(STORAGE_STATE, JSON.stringify(normalizeState(state)));
-    } catch (e) {}
+      window.dispatchEvent(new CustomEvent('alexia-profile-cache-updated', {
+        detail: {
+          userId: userId,
+          stats: {
+            total_time_seconds: Number(state.stats.total_time_seconds || 0) || 0,
+            total_videos_watched: Number(state.stats.total_videos_watched || 0) || 0,
+            videos_viewed_count: Number(state.stats.videos_viewed_count || 0) || 0,
+            score: Number(state.stats.score || 0) || 0
+          }
+        }
+      }));
+    } catch(e) {}
   }
 
   function getBadgeLabel(videoCount){
-    var count = safeNumber(videoCount);
+    var count = Number(videoCount || 0) || 0;
     if (count >= 50) return 'ADDICTED';
     if (count >= 10) return 'EXPLORER';
     return 'VISITOR';
   }
 
-  function emitProfileCacheUpdate(state, source){
-    var normalized = normalizeState(state);
-    try {
-      window.dispatchEvent(new CustomEvent('alexia-profile-cache-updated', {
-        detail: {
-          source: source || 'cache',
-          userId: normalized.meta.user_id || normalized.meta.local_user_id || '',
-          stats: {
-            total_time_seconds: normalized.stats.total_time_seconds,
-            video_watch_seconds: normalized.stats.video_watch_seconds,
-            total_videos_watched: normalized.stats.total_videos_watched,
-            videos_viewed_count: normalized.stats.videos_viewed_count,
-            score: normalized.stats.score,
-            updated_at: normalized.stats.updated_at || ''
-          },
-          badge: getBadgeLabel(normalized.stats.total_videos_watched || normalized.stats.videos_viewed_count)
-        }
-      }));
-    } catch (e) {}
+
+  function isPageActive(){
+    return !document.hidden;
   }
 
-  function setState(state, source){
-    state = normalizeState(state);
-    saveState(state);
-    emitProfileCacheUpdate(state, source);
+  function findVideoSlug(){
+    var path = (location.pathname || '').replace(/\/$/, '');
+    var slug = path.split('/').pop() || 'home';
+    slug = slug.replace(/\.html?$/i, '');
+    return slug || 'home';
   }
 
-  function nowIso(){
-    return new Date().toISOString();
+  function findVideoId(){
+    var iframe = document.querySelector('iframe[src*="youtube.com/embed/"], iframe[src*="youtube-nocookie.com/embed/"], iframe[src*="player.vimeo.com/video/"]');
+    var video = document.querySelector('video');
+    if (iframe) {
+      var src = iframe.getAttribute('src') || '';
+      var yt = src.match(/embed\/([^?&#"']+)/i);
+      var vi = src.match(/video\/([^?&#"']+)/i);
+      if (yt && yt[1]) return yt[1];
+      if (vi && vi[1]) return vi[1];
+    }
+    if (video) {
+      var vsrc = video.currentSrc || video.getAttribute('src') || '';
+      if (vsrc) return vsrc.split('/').pop().split('?')[0];
+    }
+    return findVideoSlug();
+  }
+
+  function isVideoLikePage(){
+    var path = location.pathname || '';
+    if (/\/playlist\//i.test(path)) return true;
+    return !!document.querySelector('iframe[src*="youtube.com/embed/"], iframe[src*="youtube-nocookie.com/embed/"], iframe[src*="player.vimeo.com/video/"], video');
   }
 
   function loadSupabase(cb){
     if (window.supabase && window.supabase.createClient) return cb();
     var existing = document.querySelector('script[data-alexia-supabase-loader="1"]');
     if (existing) {
-      existing.addEventListener('load', cb, { once: true });
+      existing.addEventListener('load', cb, { once:true });
       return;
     }
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-    script.defer = true;
-    script.setAttribute('data-alexia-supabase-loader', '1');
-    script.onload = cb;
-    document.head.appendChild(script);
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.defer = true;
+    s.setAttribute('data-alexia-supabase-loader', '1');
+    s.onload = cb;
+    document.head.appendChild(s);
   }
 
-  function loadScriptOnce(src, marker, cb){
-    if (marker()) return cb();
-    var existing = document.querySelector('script[data-src="' + src + '"]');
-    if (existing) {
-      existing.addEventListener('load', cb, { once: true });
-      return;
-    }
-    var script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.setAttribute('data-src', src);
-    script.onload = cb;
-    document.head.appendChild(script);
-  }
-
-  function findVideoSlug(){
-    var path = String(location.pathname || '/').replace(/\/+$/, '');
-    var slug = path.split('/').pop() || 'home';
-    return slug.replace(/\.html?$/i, '') || 'home';
-  }
-
-  function findMainIframe(){
-    return document.getElementById('main-video-player') ||
-      document.querySelector('iframe[src*="youtube.com/embed/"], iframe[src*="youtube-nocookie.com/embed/"], iframe[src*="player.vimeo.com/video/"]');
-  }
-
-  function findVideoId(){
-    var iframe = findMainIframe();
-    var video = document.querySelector('video');
-    if (iframe) {
-      var src = String(iframe.getAttribute('src') || '');
-      var youtube = src.match(/embed\/([^?&#"']+)/i);
-      var vimeo = src.match(/video\/([^?&#"']+)/i);
-      if (youtube && youtube[1]) return youtube[1];
-      if (vimeo && vimeo[1]) return vimeo[1];
-    }
-    if (video) {
-      var directSrc = String(video.currentSrc || video.getAttribute('src') || '');
-      if (directSrc) return directSrc.split('/').pop().split('?')[0];
-    }
-    return findVideoSlug();
-  }
-
-  function isVideoLikePage(){
-    var path = String(location.pathname || '');
-    if (/\/playlist\//i.test(path)) return true;
-    return !!(findMainIframe() || document.querySelector('video'));
-  }
-
-  var localUserId = ensureLocalUserId();
+  var userId = ensureUserId();
+  var localAnonUserId = userId;
   var state = loadState();
-  if (!state.meta.local_user_id) state.meta.local_user_id = localUserId;
-  if (!state.meta.user_id) state.meta.user_id = localUserId;
-
-  var userId = state.meta.user_id || localUserId;
-  var pageUrl = String(location.pathname || '/');
+  var pageUrl = location.pathname || '/';
   var videoSlug = findVideoSlug();
   var videoId = findVideoId();
   var videoLikePage = isVideoLikePage();
   var client = null;
-  var lastInteractionAt = Date.now();
-  var pendingSiteSeconds = 0;
-  var pendingVideoWatchSeconds = 0;
+  var pendingTime = 0;
   var pendingScore = 0;
-  var scoreSecondBucket = 0;
+  var watchSeconds = 0;
   var markedViewed = !!state.viewedVideos[videoSlug];
-  var flushPromise = null;
-  var flushRequested = false;
+  var flushBusy = false;
 
-  function markInteraction(){
-    lastInteractionAt = Date.now();
+  function syncLocalVideoCount(){
+    var count = Object.keys(state.viewedVideos || {}).length;
+    state.stats.total_videos_watched = count;
+    state.stats.videos_viewed_count = count;
   }
 
-  ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'pointerdown'].forEach(function(eventName){
-    window.addEventListener(eventName, markInteraction, { passive: true });
-  });
-
-  function isHumanActive(){
-    return !document.hidden && (Date.now() - lastInteractionAt) <= ACTIVITY_WINDOW_MS;
-  }
-
-  function setViewedCount(count){
-    var safe = safeNumber(count);
-    state.stats.total_videos_watched = safe;
-    state.stats.videos_viewed_count = safe;
-  }
-
-  function buildStatsUpsert(){
-    return {
-      user_id: userId,
-      total_time_seconds: safeNumber(state.stats.total_time_seconds),
-      video_watch_seconds: safeNumber(state.stats.video_watch_seconds),
-      total_videos_watched: safeNumber(state.stats.total_videos_watched),
-      videos_viewed_count: safeNumber(state.stats.videos_viewed_count),
-      score: safeNumber(state.stats.score),
-      last_update: nowIso(),
-      updated_at: nowIso()
-    };
-  }
+  syncLocalVideoCount();
+  saveState(state);
 
   async function resolveTrackedUserId(){
-    if (!client || !client.auth || !client.auth.getSession) {
-      userId = localUserId;
-      state.meta.user_id = userId;
-      return userId;
-    }
+    if (!client || !client.auth || !client.auth.getSession) return userId;
     try {
-      var session = await client.auth.getSession();
-      var authUser = session && session.data && session.data.session && session.data.session.user;
-      var nextUserId = authUser && authUser.id ? String(authUser.id) : localUserId;
-      if (nextUserId !== userId) {
-        if (userId === localUserId && nextUserId !== localUserId) {
-          await migrateAnonStatsToAuth(nextUserId);
+      var sess = await client.auth.getSession();
+      var authUser = sess && sess.data && sess.data.session && sess.data.session.user;
+      if (authUser && authUser.id) {
+        var authId = String(authUser.id);
+        if (authId !== userId) {
+          userId = authId;
+          await migrateAnonStatsToAuth(authId);
         }
-        userId = nextUserId;
-        state.meta.user_id = userId;
-        setState(state, 'identity');
       }
-    } catch (e) {
-      userId = localUserId;
-      state.meta.user_id = userId;
-    }
+    } catch(e) {}
     return userId;
   }
 
-  async function migrateAnonStatsToAuth(authUserId){
-    if (!client || !authUserId || authUserId === localUserId) return;
+  async function migrateAnonStatsToAuth(authId){
+    if (!client || !authId || !localAnonUserId || localAnonUserId === authId) return;
     try {
-      await client.from('user_video_views')
-        .update({ user_id: authUserId })
-        .eq('user_id', localUserId);
+      var anonStatsRes = await client.from('user_stats').select('*').eq('user_id', localAnonUserId).maybeSingle();
+      var authStatsRes = await client.from('user_stats').select('*').eq('user_id', authId).maybeSingle();
+      var anonStats = anonStatsRes && anonStatsRes.data ? anonStatsRes.data : null;
+      var authStats = authStatsRes && authStatsRes.data ? authStatsRes.data : null;
 
-      var anonStats = await client.from('user_stats').select('*').eq('user_id', localUserId).maybeSingle();
-      var authStats = await client.from('user_stats').select('*').eq('user_id', authUserId).maybeSingle();
+      await client.from('user_stats').upsert({
+        user_id: authId,
+        total_time_seconds: Math.max(Number(authStats && authStats.total_time_seconds || 0), Number(anonStats && anonStats.total_time_seconds || 0), Number(state.stats.total_time_seconds || 0)),
+        total_videos_watched: Math.max(Number(authStats && (authStats.total_videos_watched || authStats.videos_viewed_count) || 0), Number(anonStats && (anonStats.total_videos_watched || anonStats.videos_viewed_count) || 0), Number(state.stats.total_videos_watched || 0)),
+        videos_viewed_count: Math.max(Number(authStats && (authStats.videos_viewed_count || authStats.total_videos_watched) || 0), Number(anonStats && (anonStats.videos_viewed_count || anonStats.total_videos_watched) || 0), Number(state.stats.videos_viewed_count || 0)),
+        score: Math.max(Number(authStats && authStats.score || 0), Number(anonStats && anonStats.score || 0), Number(state.stats.score || 0)),
+        last_update: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }, { onConflict:'user_id' });
 
-      var merged = normalizeState({
-        viewedVideos: state.viewedVideos,
-        stats: {
-          total_time_seconds: Math.max(
-            safeNumber(state.stats.total_time_seconds),
-            safeNumber(anonStats && anonStats.data && anonStats.data.total_time_seconds),
-            safeNumber(authStats && authStats.data && authStats.data.total_time_seconds)
-          ),
-          video_watch_seconds: Math.max(
-            safeNumber(state.stats.video_watch_seconds),
-            safeNumber(anonStats && anonStats.data && anonStats.data.video_watch_seconds),
-            safeNumber(authStats && authStats.data && authStats.data.video_watch_seconds)
-          ),
-          total_videos_watched: Math.max(
-            safeNumber(state.stats.total_videos_watched),
-            safeNumber(anonStats && anonStats.data && (anonStats.data.videos_viewed_count || anonStats.data.total_videos_watched)),
-            safeNumber(authStats && authStats.data && (authStats.data.videos_viewed_count || authStats.data.total_videos_watched))
-          ),
-          videos_viewed_count: Math.max(
-            safeNumber(state.stats.videos_viewed_count),
-            safeNumber(anonStats && anonStats.data && (anonStats.data.videos_viewed_count || anonStats.data.total_videos_watched)),
-            safeNumber(authStats && authStats.data && (authStats.data.videos_viewed_count || authStats.data.total_videos_watched))
-          ),
-          score: Math.max(
-            safeNumber(state.stats.score),
-            safeNumber(anonStats && anonStats.data && anonStats.data.score),
-            safeNumber(authStats && authStats.data && authStats.data.score)
-          )
-        },
-        meta: state.meta
-      });
-
-      state.stats = merged.stats;
-      state.meta.user_id = authUserId;
-      var previousUserId = userId;
-      userId = authUserId;
-      await client.from('user_stats').upsert(buildStatsUpsert(), { onConflict: 'user_id' });
-      userId = authUserId || previousUserId;
-      setState(state, 'migration');
-    } catch (e) {}
-  }
-
-  async function getRemoteViewedCount(){
-    if (!client) return safeNumber(state.stats.videos_viewed_count || state.stats.total_videos_watched);
-    try {
-      var result = await client.from('user_video_views')
-        .select('video_slug', { count: 'exact', head: true })
-        .eq('user_id', userId)
-        .eq('viewed', true);
-      return safeNumber(result && result.count);
-    } catch (e) {
-      return safeNumber(state.stats.videos_viewed_count || state.stats.total_videos_watched);
-    }
-  }
-
-  async function seedRemoteFromLocalIfNeeded(){
-    if (!client) return;
-    var localViewed = Object.keys(state.viewedVideos || {});
-    if (!localViewed.length) return;
-
-    var remoteCount = await getRemoteViewedCount();
-    if (remoteCount > 0) return;
-
-    for (var i = 0; i < localViewed.length; i++) {
-      var slug = String(localViewed[i] || '').trim();
-      if (!slug) continue;
       try {
-        await client.from('user_video_views').upsert({
-          user_id: userId,
-          video_slug: slug,
-          video_id: slug,
-          watched_seconds: 30,
-          viewed: true,
-          last_seen_at: nowIso(),
-          watched_at: nowIso()
-        }, { onConflict: 'user_id,video_slug' });
-      } catch (e) {}
-    }
-  }
-
-  async function readRemoteSnapshot(){
-    if (!client) return null;
-    try {
-      await resolveTrackedUserId();
-      await seedRemoteFromLocalIfNeeded();
-
-      var statsRes = await client.from('user_stats').select('*').eq('user_id', userId).maybeSingle();
-      var row = statsRes && statsRes.data ? statsRes.data : {};
-      var viewedCount = await getRemoteViewedCount();
-
-      return {
-        total_time_seconds: safeNumber(row.total_time_seconds),
-        video_watch_seconds: safeNumber(row.video_watch_seconds),
-        total_videos_watched: viewedCount || safeNumber(row.total_videos_watched || row.videos_viewed_count),
-        videos_viewed_count: viewedCount || safeNumber(row.videos_viewed_count || row.total_videos_watched),
-        score: safeNumber(row.score),
-        updated_at: String(row.updated_at || row.last_update || '')
-      };
-    } catch (e) {
-      return null;
-    }
-  }
-
-  async function syncRemoteSnapshot(source){
-    var remote = await readRemoteSnapshot();
-    if (!remote) return;
-
-    state.stats.total_time_seconds = Math.max(safeNumber(state.stats.total_time_seconds), safeNumber(remote.total_time_seconds));
-    state.stats.video_watch_seconds = Math.max(safeNumber(state.stats.video_watch_seconds), safeNumber(remote.video_watch_seconds));
-    state.stats.score = Math.max(safeNumber(state.stats.score), safeNumber(remote.score));
-    setViewedCount(remote.videos_viewed_count || remote.total_videos_watched);
-    state.stats.updated_at = remote.updated_at || nowIso();
-    state.meta.last_remote_sync_at = nowIso();
-    setState(state, source || 'remote-sync');
+        await client.from('user_video_views').update({ user_id: authId }).eq('user_id', localAnonUserId);
+      } catch(_e) {}
+    } catch(e) {}
   }
 
   async function ensureRemoteStatsRow(){
     if (!client) return;
     try {
       await resolveTrackedUserId();
-      await client.from('user_stats').upsert(buildStatsUpsert(), { onConflict: 'user_id' });
-    } catch (e) {}
-  }
-
-  async function upsertVideoViewRow(secondsValue, viewed){
-    if (!client || !videoLikePage) return null;
-    try {
-      await resolveTrackedUserId();
-      var watchedSeconds = Math.max(0, Math.floor(safeNumber(secondsValue)));
-      var payload = {
+      syncLocalVideoCount();
+      await client.from('user_stats').upsert({
         user_id: userId,
-        video_slug: videoSlug,
-        video_id: String(videoId || videoSlug || ''),
-        watched_seconds: watchedSeconds,
-        viewed: !!viewed,
-        last_seen_at: nowIso(),
-        watched_at: viewed ? nowIso() : null
-      };
+        total_time_seconds: Number(state.stats.total_time_seconds || 0),
+        total_videos_watched: Number(state.stats.total_videos_watched || 0),
+        videos_viewed_count: Number(state.stats.videos_viewed_count || 0),
+        score: Number(state.stats.score || 0),
+        last_update: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }, { onConflict:'user_id' });
+    } catch(e) {}
+  }
 
-      await client.from('user_video_views').upsert(payload, { onConflict: 'user_id,video_slug' });
-      return payload;
-    } catch (e) {
-      return null;
+  async function getRemoteViewedCount(){
+    if (!client) return Number(state.stats.videos_viewed_count || state.stats.total_videos_watched || 0) || 0;
+    try {
+      var res = await client
+        .from('user_video_views')
+        .select('video_slug', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('viewed', true);
+      return Number(res && res.count || 0) || 0;
+    } catch(e) {
+      return Number(state.stats.videos_viewed_count || state.stats.total_videos_watched || 0) || 0;
     }
   }
 
-  function getViewThresholdSeconds(duration){
-    var d = safeNumber(duration);
-    if (d > 0) return Math.min(30, Math.max(8, Math.round(d * 0.25)));
-    return 30;
-  }
+  async function upsertVideoViewRow(secondsValue){
+    if (!client || !videoLikePage) return;
+    var nowIso = new Date().toISOString();
+    var seconds = Number(secondsValue || 0) || 0;
 
-  async function markVideoViewed(force){
-    if (!videoLikePage || markedViewed) return;
-    if (!force && playback.watchSeconds < getViewThresholdSeconds(playback.durationSeconds)) return;
+    try {
+      var found = await client
+        .from('user_video_views')
+        .select('id, watched_seconds, viewed')
+        .eq('user_id', userId)
+        .eq('video_slug', videoSlug)
+        .limit(1)
+        .maybeSingle();
 
-    markedViewed = true;
-    state.viewedVideos[videoSlug] = nowIso();
-    state.stats.score = safeNumber(state.stats.score) + SCORE_PER_VIDEO;
-
-    await upsertVideoViewRow(playback.watchSeconds, true);
-    setViewedCount(await getRemoteViewedCount());
-    state.stats.updated_at = nowIso();
-    setState(state, 'video-viewed');
-    await ensureRemoteStatsRow();
-  }
-
-  var playback = {
-    watchSeconds: 0,
-    durationSeconds: 0,
-    playing: false,
-    lastObservedTime: null,
-    pollTimer: null,
-    update: function(current, duration){
-      if (typeof duration === 'number' && isFinite(duration) && duration > 0) {
-        playback.durationSeconds = Math.max(playback.durationSeconds, duration);
-      }
-      if (typeof current !== 'number' || !isFinite(current)) return;
-
-      if (playback.lastObservedTime === null) {
-        playback.lastObservedTime = current;
-        return;
-      }
-
-      var delta = current - playback.lastObservedTime;
-      playback.lastObservedTime = current;
-
-      if (delta <= 0 || delta > MAX_PROGRESS_DELTA_SECONDS) return;
-      pendingVideoWatchSeconds += delta;
-      playback.watchSeconds += delta;
-      if (!markedViewed && playback.watchSeconds >= getViewThresholdSeconds(playback.durationSeconds)) {
-        markVideoViewed(false);
-      }
-    },
-    resetClock: function(current){
-      playback.lastObservedTime = typeof current === 'number' && isFinite(current) ? current : null;
-    },
-    setPlaying: function(isPlaying, current){
-      playback.playing = !!isPlaying;
-      if (!playback.playing) playback.resetClock(current);
-    }
-  };
-
-  function startPolling(fetchCurrent, fetchDuration){
-    stopPolling();
-    playback.pollTimer = window.setInterval(function(){
-      Promise.all([fetchCurrent(), fetchDuration()]).then(function(values){
-        playback.update(safeNumber(values[0]), safeNumber(values[1]));
-      }).catch(function(){});
-    }, 1000);
-  }
-
-  function stopPolling(){
-    if (playback.pollTimer) {
-      window.clearInterval(playback.pollTimer);
-      playback.pollTimer = null;
-    }
-  }
-
-  function attachHtmlVideoTracking(){
-    var video = document.querySelector('video');
-    if (!video) return false;
-
-    function syncNow(){
-      playback.update(safeNumber(video.currentTime), safeNumber(video.duration));
-    }
-
-    video.addEventListener('play', function(){
-      playback.setPlaying(true, safeNumber(video.currentTime));
-    });
-    video.addEventListener('pause', function(){
-      syncNow();
-      playback.setPlaying(false, safeNumber(video.currentTime));
-    });
-    video.addEventListener('seeking', function(){
-      playback.resetClock(safeNumber(video.currentTime));
-    });
-    video.addEventListener('timeupdate', syncNow);
-    video.addEventListener('ended', function(){
-      playback.update(safeNumber(video.duration || video.currentTime), safeNumber(video.duration));
-      playback.setPlaying(false, safeNumber(video.duration || video.currentTime));
-      markVideoViewed(true);
-      flushStats(true);
-    });
-    return true;
-  }
-
-  function attachYouTubeTracking(iframe){
-    if (!iframe) return false;
-    var src = String(iframe.getAttribute('src') || '');
-    if (!/youtube\.com\/embed\/|youtube-nocookie\.com\/embed\//i.test(src)) return false;
-
-    loadScriptOnce('https://www.youtube.com/iframe_api', function(){
-      return !!(window.YT && window.YT.Player);
-    }, function(){
-      function initPlayer(){
-        if (!(window.YT && window.YT.Player)) {
-          window.setTimeout(initPlayer, 200);
-          return;
-        }
-
-        if (!iframe.id) iframe.id = 'alexia-yt-' + Math.random().toString(36).slice(2);
-        var currentSrc = String(iframe.getAttribute('src') || '');
-        if (currentSrc.indexOf('enablejsapi=1') === -1) {
-          currentSrc += (currentSrc.indexOf('?') === -1 ? '?' : '&') + 'enablejsapi=1';
-        }
-        if (!/[?&]origin=/.test(currentSrc)) {
-          currentSrc += '&origin=' + encodeURIComponent(location.origin);
-        }
-        iframe.setAttribute('src', currentSrc);
-
-        var player;
-        try {
-          player = new window.YT.Player(iframe.id, {
-            events: {
-              onReady: function(){
-                try {
-                  playback.durationSeconds = Math.max(playback.durationSeconds, safeNumber(player.getDuration()));
-                } catch (e) {}
-              },
-              onStateChange: function(event){
-                var stateCode = safeNumber(event && event.data);
-                if (stateCode === 1) {
-                  playback.setPlaying(true, safeNumber(player.getCurrentTime()));
-                  startPolling(
-                    function(){ return Promise.resolve(player.getCurrentTime()); },
-                    function(){ return Promise.resolve(player.getDuration()); }
-                  );
-                } else if (stateCode === 0) {
-                  stopPolling();
-                  playback.update(safeNumber(player.getDuration()), safeNumber(player.getDuration()));
-                  playback.setPlaying(false, safeNumber(player.getDuration()));
-                  markVideoViewed(true);
-                  flushStats(true);
-                } else {
-                  stopPolling();
-                  try { playback.update(safeNumber(player.getCurrentTime()), safeNumber(player.getDuration())); } catch (e) {}
-                  playback.setPlaying(false, safeNumber(player.getCurrentTime()));
-                }
-              }
-            }
+      if (found && found.data && found.data.id) {
+        await client
+          .from('user_video_views')
+          .update({
+            video_id: videoId,
+            watched_seconds: Math.max(Number(found.data.watched_seconds || 0), seconds),
+            viewed: true,
+            last_seen_at: nowIso,
+            watched_at: nowIso
+          })
+          .eq('id', found.data.id);
+      } else {
+        await client
+          .from('user_video_views')
+          .insert({
+            user_id: userId,
+            video_slug: videoSlug,
+            video_id: videoId,
+            watched_seconds: seconds,
+            viewed: true,
+            last_seen_at: nowIso,
+            watched_at: nowIso
           });
-        } catch (e) {}
       }
-
-      if (window.YT && window.YT.Player) initPlayer();
-      else {
-        var previous = window.onYouTubeIframeAPIReady;
-        window.onYouTubeIframeAPIReady = function(){
-          if (typeof previous === 'function') previous();
-          initPlayer();
-        };
-      }
-    });
-    return true;
+    } catch(e) {}
   }
 
-  function attachVimeoTracking(iframe){
-    if (!iframe) return false;
-    var src = String(iframe.getAttribute('src') || '');
-    if (!/player\.vimeo\.com\/video\//i.test(src)) return false;
-
-    loadScriptOnce('https://player.vimeo.com/api/player.js', function(){
-      return !!(window.Vimeo && window.Vimeo.Player);
-    }, function(){
-      if (!(window.Vimeo && window.Vimeo.Player)) return;
+  async function markVideoViewed(){
+    if (!videoLikePage || markedViewed) return;
+    markedViewed = true;
+    state.viewedVideos[videoSlug] = Date.now();
+    syncLocalVideoCount();
+    state.stats.score = Number(state.stats.score || 0) + SCORE_PER_VIDEO;
+    pendingScore += SCORE_PER_VIDEO;
+    saveState(state);
+    if (client) {
       try {
-        var player = new window.Vimeo.Player(iframe);
-        player.on('play', function(data){
-          playback.setPlaying(true, safeNumber(data && data.seconds));
-        });
-        player.on('pause', function(data){
-          playback.update(safeNumber(data && data.seconds), safeNumber(data && data.duration));
-          playback.setPlaying(false, safeNumber(data && data.seconds));
-        });
-        player.on('timeupdate', function(data){
-          playback.update(safeNumber(data && data.seconds), safeNumber(data && data.duration));
-        });
-        player.on('seeked', function(data){
-          playback.resetClock(safeNumber(data && data.seconds));
-        });
-        player.on('ended', function(data){
-          playback.update(safeNumber(data && data.duration), safeNumber(data && data.duration));
-          playback.setPlaying(false, safeNumber(data && data.duration));
-          markVideoViewed(true);
-          flushStats(true);
-        });
-      } catch (e) {}
-    });
-    return true;
-  }
-
-  function attachPlaybackTracking(){
-    if (attachHtmlVideoTracking()) return;
-    var iframe = findMainIframe();
-    if (!iframe) return;
-    if (attachYouTubeTracking(iframe)) return;
-    attachVimeoTracking(iframe);
+        await resolveTrackedUserId();
+        await upsertVideoViewRow(watchSeconds);
+        var viewedCount = await getRemoteViewedCount();
+        state.stats.total_videos_watched = viewedCount;
+        state.stats.videos_viewed_count = viewedCount;
+        saveState(state);
+      emitProfileCacheUpdate();
+        await client.from('user_stats').upsert({
+          user_id: userId,
+          total_time_seconds: Number(state.stats.total_time_seconds || 0),
+          total_videos_watched: viewedCount,
+          videos_viewed_count: viewedCount,
+          score: Number(state.stats.score || 0),
+          last_update: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }, { onConflict:'user_id' });
+      } catch(e) {}
+    }
   }
 
   async function flushStats(force){
-    if (flushPromise) {
-      flushRequested = flushRequested || !!force;
-      return flushPromise;
+    if (!client || flushBusy) return;
+    if (!force && pendingTime <= 0 && pendingScore <= 0) return;
+    flushBusy = true;
+    try {
+      await resolveTrackedUserId();
+      state.stats.total_time_seconds = Number(state.stats.total_time_seconds || 0) + pendingTime;
+      state.stats.score = Number(state.stats.score || 0) + pendingScore;
+      syncLocalVideoCount();
+      pendingTime = 0;
+      pendingScore = 0;
+      saveState(state);
+      emitProfileCacheUpdate();
+
+      if (videoLikePage) {
+        await upsertVideoViewRow(watchSeconds);
+      }
+
+      var viewedCount = await getRemoteViewedCount();
+      state.stats.total_videos_watched = Math.max(Number(state.stats.total_videos_watched || 0), viewedCount);
+      state.stats.videos_viewed_count = Math.max(Number(state.stats.videos_viewed_count || 0), viewedCount);
+      saveState(state);
+      emitProfileCacheUpdate();
+
+      await client.from('user_stats').upsert({
+        user_id: userId,
+        total_time_seconds: Number(state.stats.total_time_seconds || 0),
+        total_videos_watched: Number(state.stats.total_videos_watched || 0),
+        videos_viewed_count: Number(state.stats.videos_viewed_count || 0),
+        score: Number(state.stats.score || 0),
+        last_update: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }, { onConflict:'user_id' });
+    } catch(e) {
+    } finally {
+      flushBusy = false;
     }
-
-    flushPromise = (async function(){
-      do {
-        var mustFlush = !!force || flushRequested;
-        flushRequested = false;
-        force = false;
-
-        if (!mustFlush && pendingSiteSeconds <= 0 && pendingVideoWatchSeconds <= 0 && pendingScore <= 0) continue;
-        if (!client) continue;
-
-        await resolveTrackedUserId();
-
-        if (pendingSiteSeconds > 0) {
-          state.stats.total_time_seconds = safeNumber(state.stats.total_time_seconds) + pendingSiteSeconds;
-          pendingSiteSeconds = 0;
-        }
-        if (pendingVideoWatchSeconds > 0) {
-          var wholeVideoSeconds = Math.floor(pendingVideoWatchSeconds);
-          if (wholeVideoSeconds > 0) {
-            state.stats.video_watch_seconds = safeNumber(state.stats.video_watch_seconds) + wholeVideoSeconds;
-            pendingVideoWatchSeconds = pendingVideoWatchSeconds - wholeVideoSeconds;
-          }
-        }
-        if (pendingScore > 0) {
-          state.stats.score = safeNumber(state.stats.score) + pendingScore;
-          pendingScore = 0;
-        }
-        state.stats.updated_at = nowIso();
-        setState(state, 'flush-local');
-
-        if (videoLikePage) {
-          await upsertVideoViewRow(playback.watchSeconds, markedViewed);
-          if (markedViewed) setViewedCount(await getRemoteViewedCount());
-        }
-
-        await ensureRemoteStatsRow();
-        setState(state, 'flush-remote');
-      } while (flushRequested);
-    })().finally(function(){
-      flushPromise = null;
-    });
-
-    return flushPromise;
   }
 
   function activeTick(){
-    if (!isHumanActive()) return;
-    pendingSiteSeconds += Math.round(SITE_TICK_MS / 1000);
-    scoreSecondBucket += Math.round(SITE_TICK_MS / 1000);
-    if (scoreSecondBucket >= SCORE_TICK_SECONDS) {
-      var scoreUnits = Math.floor(scoreSecondBucket / SCORE_TICK_SECONDS);
-      pendingScore += scoreUnits * SCORE_PER_ACTIVE_TICK;
-      scoreSecondBucket = scoreSecondBucket % SCORE_TICK_SECONDS;
+    if (!isPageActive()) return;
+    pendingTime += Math.round(ACTIVE_TICK_MS / 1000);
+    pendingScore += SCORE_PER_ACTIVE_TICK;
+    if (videoLikePage) watchSeconds += Math.round(ACTIVE_TICK_MS / 1000);
+    if (videoLikePage && !markedViewed && watchSeconds >= WATCH_THRESHOLD_SECONDS) {
+      markVideoViewed();
     }
-    if (pendingSiteSeconds >= 15 || pendingScore >= 2 || pendingVideoWatchSeconds >= 10) {
+    if (pendingTime >= 15 || pendingScore >= 5) {
       flushStats(false);
     }
   }
 
-  function installLifecycleHooks(){
-    setInterval(activeTick, SITE_TICK_MS);
-    setInterval(function(){ flushStats(false); }, FLUSH_INTERVAL_MS);
+  function attachDirectVideoTracking(){
+    var video = document.querySelector('video');
+    if (!video) return;
+    var playedEnough = false;
 
-    document.addEventListener('visibilitychange', function(){
-      if (document.hidden) flushStats(true);
-      else markInteraction();
+    function maybeMark(){
+      watchSeconds = Math.max(watchSeconds, Math.floor(Number(video.currentTime || 0) || 0));
+      if (!playedEnough && watchSeconds >= 8) {
+        playedEnough = true;
+        markVideoViewed();
+      }
+    }
+
+    video.addEventListener('timeupdate', maybeMark);
+    video.addEventListener('ended', function(){
+      watchSeconds = Math.max(watchSeconds, Math.floor(Number(video.duration || video.currentTime || 0) || 0));
+      playedEnough = true;
+      markVideoViewed();
+      flushStats(true);
     });
-    window.addEventListener('focus', markInteraction);
-    window.addEventListener('pagehide', function(){ flushStats(true); });
-    window.addEventListener('beforeunload', function(){ flushStats(true); });
   }
 
   function start(){
-    setState(state, 'boot');
-    attachPlaybackTracking();
-    installLifecycleHooks();
+    attachDirectVideoTracking();
+    setInterval(activeTick, ACTIVE_TICK_MS);
+    setInterval(function(){ flushStats(false); }, 20000);
+    document.addEventListener('visibilitychange', function(){ if (document.hidden) flushStats(true); });
+    window.addEventListener('pagehide', function(){ flushStats(true); });
+    window.addEventListener('beforeunload', function(){ flushStats(true); });
+
+    setTimeout(function(){
+      if (videoLikePage && !markedViewed && watchSeconds >= WATCH_THRESHOLD_SECONDS) {
+        markVideoViewed();
+      }
+    }, WATCH_THRESHOLD_SECONDS * 1000 + 600);
   }
 
   loadSupabase(function(){
     try {
-      client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-          storageKey: 'alexia-comments-auth-v2'
-        }
-      });
-    } catch (e) {
+      client = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        { auth: { persistSession:true, autoRefreshToken:true, detectSessionInUrl:true, storageKey:'alexia-comments-auth-v2' } }
+      );
+    } catch(e) {
       client = null;
     }
 
+    emitProfileCacheUpdate();
+    if (client) {
+      resolveTrackedUserId()
+        .then(function(){ ensureRemoteStatsRow(); })
+        .catch(function(){ ensureRemoteStatsRow(); });
+    }
+
+    emitProfileCacheUpdate();
     start();
-
-    if (!client) return;
-
-    resolveTrackedUserId()
-      .then(function(){ return syncRemoteSnapshot('remote-initial'); })
-      .then(function(){ return ensureRemoteStatsRow(); })
-      .catch(function(){});
   });
 })();

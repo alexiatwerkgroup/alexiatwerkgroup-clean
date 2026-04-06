@@ -1615,6 +1615,17 @@ style.textContent += `
       const usernameToUse = await ensureProfileUsername(currentUser);
       const { error } = await client.from('video_comments').insert({ page_slug: pagePath, author_name: usernameToUse, username_snapshot: usernameToUse, user_id: currentUser.id, body: text, likes_count: 0 });
       if (error) throw error;
+      try {
+        window.dispatchEvent(new CustomEvent('alexia-comment-posted', {
+          detail: {
+            userId: currentUser.id,
+            username: usernameToUse,
+            pageSlug: pagePath,
+            body: text,
+            createdAt: new Date().toISOString()
+          }
+        }));
+      } catch(e) {}
       clearPendingComment(); markCommentPostedNow(); inputEl.value = ''; inputEl.style.height = 'auto'; setStatus('Comment posted.', 'is-ok');
       globalStatsPromise = null; window.__alexiaStatsCache = await loadGlobalStats(true);
       await render(); refreshUserBar();

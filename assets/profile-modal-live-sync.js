@@ -77,6 +77,26 @@
     updateStatByLabel(modal, /videos watched|watched videos|videos/i, String(stats.total_videos_watched || stats.videos_viewed_count || 0));
   }
 
+  function bumpLocalCommentCount(){
+    var modal = getOpenModalBody();
+    if (!modal) return;
+    var modalUser = getModalUsername(modal);
+    var localUser = getLocalUsername();
+    if (!modalUser || !localUser || modalUser !== localUser) return;
+    var spans = modal.querySelectorAll('span');
+    for (var i = 0; i < spans.length; i++) {
+      var label = (spans[i].textContent || '').trim();
+      if (!/comments/i.test(label)) continue;
+      var stat = spans[i].closest('.stat') || spans[i].parentElement;
+      if (!stat) continue;
+      var strong = stat.querySelector('strong');
+      if (!strong) continue;
+      var current = parseInt(String(strong.textContent || '0').replace(/[^\d]/g, ''), 10);
+      strong.textContent = String((isFinite(current) ? current : 0) + 1);
+      return;
+    }
+  }
+
   function startModalSync(){
     if (modalTimer) return;
     modalTimer = setInterval(function(){
