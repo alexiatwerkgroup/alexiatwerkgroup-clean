@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -41,36 +41,6 @@ h1{margin: 4px 6px;font-size:clamp(28px,3.7vw,52px);line-height:1.02;text-transf
 
 <link rel="stylesheet" href="/assets/alexia-visual-polish.css">
 
-<style id="index-center-fix-v1">
-.intro-wrap{position:relative;width:100vw;height:100vh;overflow:hidden}
-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center}
-.overlay{display:flex!important;justify-content:center!important;align-items:flex-end!important}
-.panel{margin-left:auto!important;margin-right:auto!important}
-</style>
-
-
-<style id="index-hard-center-v3">
-html,body{margin:0!important;padding:0!important;overflow-x:hidden!important}
-.intro-wrap{position:relative!important;width:100vw!important;height:100vh!important;min-height:100vh!important}
-video{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important}
-.overlay{
-  position:absolute!important;
-  inset:0!important;
-  display:block!important;
-  padding:0!important;
-}
-.panel{
-  position:absolute!important;
-  left:50%!important;
-  bottom:32px!important;
-  transform:translateX(-50%)!important;
-  width:min(94vw,980px)!important;
-  max-width:980px!important;
-  margin:0!important;
-}
-</style>
-
-
 <link rel="stylesheet" href="/assets/premium-polish-v10.css"/>
 
 <link rel="stylesheet" href="/assets/site-nav-final.css?v=4"/>
@@ -78,82 +48,124 @@ video{position:absolute!important;inset:0!important;width:100%!important;height:
 <link rel="stylesheet" href="/assets/final-10.css?v=1">
 <script defer src="/assets/final-10.js?v=1"></script>
 <link rel="stylesheet" href="/premium.css">
-<style id="index-final-breathing-fix-v1">
-.overlay{
+
+<style id="index-clean-fix-v4">
+html,body{
+  margin:0!important;
+  padding:0!important;
+  height:100%!important;
+  overflow-x:hidden!important;
+}
+body.has-final-nav.intro-page{
+  overflow:hidden!important;
+}
+body.has-final-nav.intro-page .intro-wrap{
+  position:relative!important;
+  width:100vw!important;
+  height:100vh!important;
+  min-height:100vh!important;
+  overflow:hidden!important;
+}
+body.has-final-nav.intro-page #introVideo{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
+body.has-final-nav.intro-page .overlay{
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
   align-items:flex-end!important;
-  padding:24px 24px 50px!important;
+  justify-content:center!important;
+  padding:24px 24px 54px!important;
 }
-.panel{
-  bottom:46px!important;
-  padding:28px 32px 30px!important;
-  min-height:unset!important;
-}
-.intro-copy{
-  gap:14px!important;
-  margin:8px auto 0!important;
-}
-.lede{
+body.has-final-nav.intro-page .panel{
+  width:min(1220px,calc(100% - 44px))!important;
+  max-width:1220px!important;
   margin:0 auto!important;
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  translate:none!important;
+  padding:34px 38px 34px!important;
+  border-radius:28px!important;
+  text-align:center!important;
+  background:linear-gradient(145deg,rgba(30,24,30,.46),rgba(9,9,13,.52))!important;
+  border:1px solid rgba(255,255,255,.15)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  box-shadow:0 28px 70px rgba(0,0,0,.46)!important;
 }
-.lede-small{
-  margin-top:4px!important;
-  padding-bottom:4px!important;
+body.has-final-nav.intro-page .panel,
+body.has-final-nav.intro-page .panel:hover{
+  transform:none!important;
+  animation:none!important;
 }
-.entry-links{
-  margin-top:14px!important;
+body.has-final-nav.intro-page h1{
+  margin:0!important;
+  font-size:clamp(34px,4.4vw,60px)!important;
+  line-height:.98!important;
+  letter-spacing:-.02em!important;
+  font-weight:900!important;
+  text-wrap:balance!important;
+  text-shadow:0 8px 26px rgba(0,0,0,.26)!important;
+}
+body.has-final-nav.intro-page .intro-copy{
+  gap:12px!important;
+  margin:14px auto 0!important;
+  max-width:980px!important;
+}
+body.has-final-nav.intro-page .lede{
+  margin:0 auto!important;
+  font-size:clamp(15px,1.18vw,18px)!important;
+  line-height:1.68!important;
+  color:rgba(255,255,255,.87)!important;
+  max-width:860px!important;
+}
+body.has-final-nav.intro-page .lede-main{
+  font-size:clamp(19px,2vw,25px)!important;
+  line-height:1.46!important;
+  color:rgba(255,255,255,.94)!important;
+  font-weight:650!important;
+}
+body.has-final-nav.intro-page .lede-small{
+  font-size:clamp(12px,.98vw,14px)!important;
+  letter-spacing:.18em!important;
+  text-transform:uppercase!important;
+  color:rgba(255,255,255,.74)!important;
+  margin-top:2px!important;
 }
 @media (max-width:760px){
-  .overlay{
-    padding:18px 18px 34px!important;
+  body.has-final-nav.intro-page .overlay{
+    padding:18px 18px 28px!important;
   }
-  .panel{
-    bottom:24px!important;
+  body.has-final-nav.intro-page .panel{
+    width:min(1220px,calc(100% - 28px))!important;
     padding:24px 20px 26px!important;
   }
 }
 </style>
-<style id="index-final-breathing-fix-v2">
-.overlay{
-  align-items:flex-end!important;
-  padding:24px 24px 84px!important;
-}
-.panel{
-  bottom:82px!important;
-  padding:28px 34px 34px!important;
-  max-height:calc(100vh - 148px)!important;
-  overflow:auto hidden!important;
-}
-.intro-copy{
-  gap:12px!important;
-  margin:8px auto 0!important;
-}
-.lede{
-  margin:0 auto!important;
-}
-.lede-small{
-  margin-top:6px!important;
-  padding-bottom:6px!important;
-}
-.entry-links{
-  margin-top:18px!important;
-}
-@media (max-width:760px){
-  .overlay{
-    padding:18px 18px 42px!important;
-  }
-  .panel{
-    bottom:34px!important;
-    padding:24px 20px 28px!important;
-    max-height:calc(100vh - 82px)!important;
-  }
-}
-</style>
+
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GGGNTMCXDR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GGGNTMCXDR');
+</script>
 </head>
-<body class="has-final-nav">
+<body class="has-final-nav intro-page" data-page="intro">
 <div class="site-nav-final"><div class="site-nav-final__inner"><nav class="site-nav-final__links" aria-label="Main"><a href="/home.html" class="is-active">Home</a><a href="/playlist/">Playlist</a><a href="/community.html">Community</a><a href="/top-100-twerk-videos.html">Top 100</a><a href="/best-twerk-dancers.html">Best Dancers</a><a href="/alexia-video-packs.html">Video Packs</a><a href="/profile.html">Profile</a></nav><div class="site-nav-final__online"><span class="site-nav-final__dot" aria-hidden="true"></span><span>ONLINE NOW</span><span data-alexia-online-count>891</span></div></div></div>
 
 <div class="intro-wrap">
-  <video id="introVideo" autoplay muted playsinline preload="auto">
+  <video id="introVideo" autoplay muted playsinline preload="auto" loop>
     <source src="intro.mp4" type="video/mp4">
   </video>
 
@@ -161,36 +173,33 @@ video{position:absolute!important;inset:0!important;width:100%!important;height:
     <div class="panel">
       <h1>Alexia Twerk Group</h1>
       <div class="intro-copy">
-        <p class="lede lede-main">A curated archive built to move visitors from discovery to the strongest playlist, 4K, studio and ranking pages.</p>
-        <p class="lede">Explore the hub, then branch into Top 100, best dancers, verified profiles and high-resolution video routes.</p>
-        <p class="lede lede-small">If you know, you know. Proceed</p>
+        <p class="lede lede-main">A curated archive built to guide visitors directly into the strongest playlist, 4K, studio and ranking routes.</p>
+        <p class="lede">Use the top navigation to move through the archive in a cleaner way, without duplicate buttons or extra clutter on the screen.</p>
+        <p class="lede lede-small">If you know, you know</p>
       </div>
-
-      
-      <div class="entry-links">
-        <a href="home.html" class="btn" id="mainSiteBtn">Enter the Main Site</a>
-        <a href="https://alexiatwerkgroup.com/playlist/" class="btn" id="playlistBtn">Enter the Playlist</a>
-        <a href="alexia-video-packs.html" class="btn btn-ghost" id="packsBtn">Video Packs</a>
-      </div>
-  </div>
+</div>
 </div>
 </div>
 
 <script>
 (function(){
   const video = document.getElementById('introVideo');
+  if(!video) return;
 
-  if(video){
+  function tryPlay(){
     const p = video.play();
     if(p && typeof p.catch === 'function'){ p.catch(function(){}); }
   }
 
-  function enableMusic(){
-    sessionStorage.setItem('alexia_autoplay_music','1');
-  }
+  video.loop = true;
+  video.addEventListener('ended', function(){
+    try {
+      video.currentTime = 0;
+    } catch(e){}
+    tryPlay();
+  });
 
-  document.getElementById('mainSiteBtn').addEventListener('click', enableMusic);
-  document.getElementById('playlistBtn').addEventListener('click', enableMusic);
+  tryPlay();
 })();
 </script>
 
@@ -204,4 +213,4 @@ video{position:absolute!important;inset:0!important;width:100%!important;height:
 </body>
 </html>
 
-<!-- update -->
+

@@ -1,13 +1,3 @@
-<style id="alexia-comments-tight-header-v17">
-.yt-comments{margin: 4px 6px;padding:0 !important}
-.yt-comments-head{margin: 4px 6px;padding:0 !important;min-height:auto !important}
-.yt-comments-head h2{margin: 4px 6px;padding:0 !important;line-height:1 !important}
-.yt-comments-head .yt-sort{margin-top:0 !important}
-@media (max-width:900px){
-  .yt-comments{margin-top:2px !important}
-  .yt-comments-head{margin-bottom:4px !important}
-}
-</style>
 <style>
 .paid-unlock-wrap{min-height:92px;display:flex;align-items:center;justify-content:center;padding:10px 10px 10px}.paid-unlock-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:auto;max-width:100%;padding:12px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:linear-gradient(180deg,rgba(24,24,30,.96),rgba(10,10,14,.96));box-shadow:0 14px 30px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.12);text-decoration:none;color:#fff;font-weight:800;font-size:14px;letter-spacing:.01em;text-align:center;overflow:hidden;isolation:isolate}.paid-unlock-btn::before{content:"";position:absolute;inset:-18% -8%;background:radial-gradient(circle at 30% 50%, rgba(255,110,140,.18), transparent 42%), radial-gradient(circle at 70% 40%, rgba(255,210,120,.14), transparent 40%);opacity:.9;z-index:-2}.paid-unlock-btn::after{content:"";position:absolute;inset:auto -30% 0 -30%;height:130%;background:linear-gradient(100deg,transparent 18%,rgba(255,255,255,.12) 50%,transparent 82%);transform:translateX(-85%) skewX(-18deg);animation:paidUnlockSweep 3.6s ease-in-out infinite;z-index:-1}.paid-unlock-label{display:inline-flex;align-items:center;justify-content:center;gap:8px}.paid-unlock-escape{animation:paidUnlockEscape 1.95s cubic-bezier(.36,.07,.19,.97) infinite;transform-origin:center center}.paid-unlock-btn:hover{transform:translateY(-1px) scale(1.015);box-shadow:0 18px 38px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.16)}@keyframes paidUnlockEscape{0%,100%{transform:translate3d(0,0,0) rotate(0deg)}8%{transform:translate3d(-2px,0,0) rotate(-1deg)}16%{transform:translate3d(3px,-1px,0) rotate(1.1deg)}24%{transform:translate3d(-4px,1px,0) rotate(-1.2deg)}32%{transform:translate3d(4px,-1px,0) rotate(1.4deg)}40%{transform:translate3d(-3px,0,0) rotate(-1deg)}48%{transform:translate3d(2px,1px,0) rotate(.7deg)}56%{transform:translate3d(-1px,0,0) rotate(-.4deg)}64%{transform:translate3d(0,-2px,0) rotate(.2deg)}72%{transform:translate3d(0,0,0) rotate(0deg)}}@keyframes paidUnlockSweep{0%,62%,100%{transform:translateX(-90%) skewX(-18deg)}78%{transform:translateX(90%) skewX(-18deg)}}
 </style>
@@ -318,6 +308,15 @@ body{transform-origin:50% 0;animation:alexiaPageZoom .42s cubic-bezier(.16,1,.3,
 <link rel="stylesheet" href="/assets/final-10.css?v=1">
 <script defer src="/assets/final-10.js?v=1"></script>
 <link rel="stylesheet" href="/premium.css?v=3">
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GGGNTMCXDR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GGGNTMCXDR');
+</script>
 </head>
 <body>
 <div class="site-nav-final"><div class="site-nav-final__inner"><nav class="site-nav-final__links" aria-label="Main"><a href="/home.html">Home</a><a href="/playlist/" class="is-active">Playlist</a><a href="/community.html">Community</a><a href="/top-100-twerk-videos.html">Top 100</a><a href="/best-twerk-dancers.html">Best Dancers</a><a href="/alexia-video-packs.html">Video Packs</a><a href="/profile.html">Profile</a></nav><div class="site-nav-final__online"><span class="site-nav-final__dot" aria-hidden="true"></span><span>ONLINE NOW</span><span data-alexia-online-count>891</span></div></div></div>
@@ -610,7 +609,7 @@ async function renderAdminPanel(page) {
   </div>
   <canvas id="alexia-heatmap-canvas" height="58"></canvas>
   <div class="alexia-hm-actions">
-    <button id="alexia-jump-most" type="button">🔥 Jump to most replayed moment</a>
+    <button id="alexia-jump-most" type="button">🔥 Jump to most replayed moment</button>
     <div class="alexia-hm-note">Updates automatically as visitors watch the clip.</div>
   </div>
 </div>
@@ -649,15 +648,15 @@ async function renderAdminPanel(page) {
 <section class="yt-comments" data-comments-root>
   <div class="yt-comments-head">
     <h2><span class="yt-comments-count">0</span> Comments</h2>
-    <button class="yt-sort" type="button" aria-label="Sort comments">☰ <small>Sort by</small></a>
+    <button class="yt-sort" type="button" aria-label="Sort comments">☰ <small>Sort by</small></button>
   </div>
   <div class="yt-compose">
     <div class="yt-avatar">A</div>
     <div class="yt-compose-main">
       <textarea class="yt-input" rows="1" placeholder="Add a comment..."></textarea>
       <div class="yt-compose-actions">
-        <button class="yt-btn-lite" type="button" data-comment-cancel>Cancel</a>
-        <button class="yt-btn-post" type="button" data-comment-post disabled>Comment</a>
+        <button class="yt-btn-lite" type="button" data-comment-cancel>Cancel</button>
+        <button class="yt-btn-post" type="button" data-comment-post disabled>Comment</button>
       </div>
     </div>
   </div>
@@ -701,7 +700,7 @@ async function renderAdminPanel(page) {
       <div class="vote-box alexia-clean-vote-box" data-video-slug="megan-thee-stallion-work-that-melinda-efteni-twerk-velvet-young">
         <div class="vote-box-title">Vote this clip as one of the hottest</div>
         <div class="video-meta-line"><span data-page-views>0</span> views · <span data-inline-votes="megan-thee-stallion-work-that-melinda-efteni-twerk-velvet-young">0</span> votes</div>
-        <div class="card-actions"><button class="btn vote-btn" type="button" data-video-id="megan-thee-stallion-work-that-melinda-efteni-twerk-velvet-young">🔥 Vote Hot</a></div>
+        <div class="card-actions"><button class="btn vote-btn" type="button" data-video-id="megan-thee-stallion-work-that-melinda-efteni-twerk-velvet-young">🔥 Vote Hot</button></div>
         <div class="vote-score" style="display:none" data-vote-score="megan-thee-stallion-work-that-melinda-efteni-twerk-velvet-young">Loading votes...</div>
       </div>
 
@@ -882,7 +881,7 @@ async function renderAdminPanel(page) {
       <p id="autoplay-copy">The next hot clip will appear only when 3 seconds are left in the current video.</p>
       <div class="autoplay-actions">
         <a class="autoplay-btn primary" id="autoplay-open-now" href="#">Play now</a>
-        <button class="autoplay-btn" id="autoplay-cancel" type="button">Cancel</a>
+        <button class="autoplay-btn" id="autoplay-cancel" type="button">Cancel</button>
       </div>
     </div>
   </div>
@@ -1312,7 +1311,7 @@ button.yt-comment-avatar > *, .yt-comment [data-open-profile] > *{pointer-events
     modal = document.createElement('div');
     modal.id = 'alexia-trex-profile-modal';
     modal.className = 'alexia-trex-profile-modal';
-    modal.innerHTML = '<div class="alexia-trex-profile-card"><div class="alexia-trex-profile-head"><div class="alexia-trex-profile-avatar" data-avatar></div><div><h3 data-name></h3><p data-meta>Community profile</p></div></div><p data-body>Profile details</p><button class="alexia-trex-profile-close" type="button">Close</a></div>';
+    modal.innerHTML = '<div class="alexia-trex-profile-card"><div class="alexia-trex-profile-head"><div class="alexia-trex-profile-avatar" data-avatar></div><div><h3 data-name></h3><p data-meta>Community profile</p></div></div><p data-body>Profile details</p><button class="alexia-trex-profile-close" type="button">Close</button></div>';
     modal.addEventListener('click', function(e){ if (e.target === modal) modal.classList.remove('open'); });
     modal.querySelector('.alexia-trex-profile-close').addEventListener('click', function(){ modal.classList.remove('open'); });
     document.body.appendChild(modal);
@@ -1372,6 +1371,6 @@ button.yt-comment-avatar > *, .yt-comment [data-open-profile] > *{pointer-events
 <script defer src="/analytics-profile.js"></script>
 <script defer src="/assets/video-discussion-bars.js?v=3005"></script>
 <script defer src="/assets/online-count-global.js"></script>
-<script src="/js/stats-final.js"></script>
+<script defer src="/assets/page-performance-guard.js?v=ultra1"></script>
 </body>
 </html>

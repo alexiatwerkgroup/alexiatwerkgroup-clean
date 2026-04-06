@@ -140,22 +140,9 @@
     if(!isPlaylistIndex || localStorage.getItem(portalKey)==='1') return;
     const portal=doc.createElement('div');
     portal.className='pro-portal is-open';
-    portal.innerHTML='<div class="pro-portal-card"><h2>Enter the archive</h2><p>A premium discovery layer added above the playlist: hover previews, watched history, editorial routes, dynamic ranking cues and recommendation blocks.</p><div class="pro-portal-actions"><a class="pro-portal-link pro-enter-playlist" href="/playlist/"><strong>Enter Playlist</strong><span>Open the main live archive with rows, ranking and replay cues.</span></a><a class="pro-portal-link" href="/best-twerk-dancers.html"><strong>Explore Dancers</strong><span>Jump into dancers, studios and grouped archive pages.</span></a><a class="pro-portal-link" href="/top-100-twerk-videos.html"><strong>Open Top 100</strong><span>Browse the strongest ranked pages in the current selection.</span></a></div><button class="pro-close" type="button">Continue inside</button></div>';
+    portal.innerHTML='<div class="pro-portal-card"><h2>Enter the archive</h2><p>A premium discovery layer added above the playlist: hover previews, watched history, editorial routes, dynamic ranking cues and recommendation blocks.</p><div class="pro-portal-actions"><a class="pro-portal-link" href="/playlist/"><strong>Enter Playlist</strong><span>Open the main live archive with rows, ranking and replay cues.</span></a><a class="pro-portal-link" href="/best-twerk-dancers.html"><strong>Explore Dancers</strong><span>Jump into dancers, studios and grouped archive pages.</span></a><a class="pro-portal-link" href="/top-100-twerk-videos.html"><strong>Open Top 100</strong><span>Browse the strongest ranked pages in the current selection.</span></a></div><button class="pro-close" type="button">Continue inside</button></div>';
     doc.body.appendChild(portal);
     const close=()=>{ portal.classList.remove('is-open'); localStorage.setItem(portalKey,'1'); setTimeout(()=>portal.remove(),260); };
-    const enterPlaylist = portal.querySelector('.pro-enter-playlist');
-if (enterPlaylist) {
-  enterPlaylist.addEventListener('click', (e) => {
-    const currentPath = (location.pathname || '').replace(/\/+$/, '');
-
-    localStorage.setItem(portalKey,'1');
-
-    if (currentPath.includes('/playlist')) {
-      e.preventDefault();
-      close();
-    }
-  });
-}
     one('.pro-close', portal).addEventListener('click',close);
     portal.addEventListener('click',e=>{ if(e.target===portal) close(); });
   }
