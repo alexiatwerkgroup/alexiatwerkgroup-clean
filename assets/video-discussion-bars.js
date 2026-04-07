@@ -31,7 +31,7 @@
   function parseIntSafe(value){ var m = String(value || '').replace(/,/g,'').match(/-?\d+/); return m ? (parseInt(m[0], 10) || 0) : 0; }
 
   function canRunRemoteRefresh(){
-    // No postMessages — uses local state flag updated by YT events
+    if (typeof window.__alexiaHasUserActivated === 'function' && !window.__alexiaHasUserActivated()) return false;
     if (ytIsPlaying) return false;
     if ((Date.now() - BOOT_AT) < Math.max(0, Number(PERF.initialRemoteDelayMs) || 0)) return false;
     return true;

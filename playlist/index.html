@@ -6274,8 +6274,8 @@ body.site-nav-final--playlist .keep-exploring{
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://dybrdnxmpzvzclewecta.supabase.co";
-const SUPABASE_KEY = "sb_publishable_gwzzXoGVfaCcDZbGQoBYUA_JeN7HfcU";
+const SUPABASE_URL = "https://vieqniahusdrfkpcuqsn.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZXFuaWFodXNkcmZrcGN1cXNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MTk2NjksImV4cCI6MjA4ODk5NTY2OX0.Ox8gUp0g-aYRvI2Zj6PWxx5unO3m3sEtal0OKLvPSkQ";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 window.__alexiaPlaylistVoteEngine = 'v3-single-source';
 
@@ -6761,7 +6761,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.addEventListener('storage', async function(e){ if (e && e.key === 'alexia_votes_changed') await refreshEverything(); });
 });
 </script>
-<script id="alexia-vote-rebuild">window.__alexiaPlaylistVoteEngineLocked = true;</script>
 <script src="assets/alexia-video-fixes.js"></script>
 <script id="playlist-pro-upgrade-script">
 (function(){
@@ -7135,6 +7134,7 @@ window.addEventListener('load', function () {
 </script>
 
 <script defer src="/assets/page-performance-guard.js?v=merge12"></script>
+<script defer src="/assets/alexia-live-fixes.js?v=1"></script>
 </body>
 </html>
 

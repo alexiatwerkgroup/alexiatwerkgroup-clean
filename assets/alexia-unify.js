@@ -108,7 +108,10 @@
     }
 
     function setOnlineCount(){
-      var count = 1 + Math.floor(Math.random() * 3);
+      var count = 1;
+      try {
+        count = Math.max(1, parseInt(localStorage.getItem('alexia_online_now_live_value_v2') || '1', 10) || 1);
+      } catch(e){}
       document.querySelectorAll('[data-alexia-online-count], #alexia-online-count').forEach(function(el){ el.textContent = String(count); });
     }
 
