@@ -17,15 +17,6 @@
     document.querySelectorAll('iframe').forEach(function(frame){ if (!frame.loading) frame.loading = 'lazy'; frame.referrerPolicy = frame.referrerPolicy || 'strict-origin-when-cross-origin'; });
   }
 
-
-  function ensureLiveFixes(){
-    if (document.querySelector('script[src="/assets/alexia-live-fixes.js?v=1"]')) return;
-    var s = document.createElement('script');
-    s.src = '/assets/alexia-live-fixes.js?v=1';
-    s.defer = true;
-    document.head.appendChild(s);
-  }
-
   function cleanDuplicateHeaderStyles(){
     var ids = ['alexia-comments-tight-header-v17','alexia-comments-compact-v8'];
     ids.forEach(function(id){
@@ -37,7 +28,6 @@
   function run(){
     cleanDuplicateHeaderStyles();
     applyContainment();
-    ensureLiveFixes();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once:true });
