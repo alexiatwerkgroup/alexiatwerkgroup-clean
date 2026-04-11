@@ -1,0 +1,5 @@
+/manifest.json
+  Content-Type: application/json
+
+/service-worker.js
+  Content-Type: application/javascript
