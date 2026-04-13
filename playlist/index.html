@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -64,6 +64,10 @@
   max-width:100%!important;
 }
 
+
+/* badge-fit-fix */
+.badges.badges-actions { flex-wrap: nowrap !important; }
+.badges.badges-actions .badge { padding-left: 8px !important; padding-right: 8px !important; white-space: nowrap !important; }
 </style>
 <style id="alexia-global-heatmap-fix">
 .player{overflow:visible !important;}
@@ -2333,9 +2337,9 @@ body.site-nav-final--playlist .keep-exploring{
 <div class="progress-line"><span class="progress-fill" id="playlist-progress-fill-hero"></span></div>
 <p class="progress-note">Replay-heavy pages unlock faster when you keep opening related clips.</p>
 <div class="badges badges-actions" id="playlist-hero-badges">
-<div class="badge streak-badge" id="playlist-streak-badge">🔥 <strong>Streak 0</strong> <span>start exploring</span></div>
-<div class="badge">📋 Next drop in preparation</div>
-<div class="badge">💃 275 hot video pages</div>
+<div class="badge streak-badge" id="playlist-streak-badge">🔥 <strong>Streak 0</strong> <span>exploring</span></div>
+<div class="badge">📋 Next drop</div>
+<div class="badge">💃 275 pages</div>
 <button class="badge badge-btn" id="surprise-me-btn" type="button">🎲 Surprise me</button>
 <button class="badge badge-btn" id="hidden-gem-btn" type="button">💎 Hidden gem</button>
 <button class="badge badge-btn featured-moment-btn" id="featured-moment-btn" type="button">🔥 Hottest moment</button>
