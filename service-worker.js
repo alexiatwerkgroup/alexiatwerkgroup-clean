@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alexia-pwa-v2.0.0';
-const RUNTIME_CACHE = 'alexia-runtime-v2.0.0';
+const CACHE_NAME = 'alexia-pwa-v2.1.0';
+const RUNTIME_CACHE = 'alexia-runtime-v2.1.0';
 const OFFLINE_URL = '/';
 
 self.addEventListener('install', event => {
