@@ -1,4 +1,36 @@
-(() => {
+
+
+/* ===== FEATURED MOMENT FIX — ?t= y #featured-moment ===== */
+(function () {
+  if (window.__alexiaFeaturedMomentFix) return;
+  window.__alexiaFeaturedMomentFix = true;
+  function getT() {
+    try { var t = parseInt(new URLSearchParams(window.location.search).get('t'), 10); return isNaN(t) || t < 0 ? null : t; } catch (e) { return null; }
+  }
+  function scrollToFeatured() {
+    var el = document.getElementById('featured-moment') || document.getElementById('heatmap-wrap') || document.querySelector('[id*="heatmap"]') || document.querySelector('[class*="heatmap"]') || document.querySelector('.featured-moment-frame-wrap');
+    if (!el) return;
+    try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { try { el.scrollIntoView(true); } catch (_) {} }
+  }
+  function seekYT(s) {
+    var p = window.__alexiaMainPlayer || window.alexiaPlayer;
+    if (p && typeof p.seekTo === 'function') { try { p.seekTo(s, true); return true; } catch (e) {} }
+    var iframe = document.getElementById('main-video-player') || document.querySelector('iframe[src*="youtube"]') || document.querySelector('.embed iframe');
+    if (iframe && iframe.contentWindow) { try { iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'seekTo', args: [s, true] }), '*'); return true; } catch (e) {} }
+    return false;
+  }
+  function run() {
+    var t = getT();
+    if (!t && window.location.hash !== '#featured-moment') return;
+    setTimeout(scrollToFeatured, 800);
+    if (t) {
+      setTimeout(function () {
+        if (!seekYT(t)) { var n = 0; var iv = setInterval(function () { if (seekYT(t) || ++n > 8) clearInterval(iv); }, 800); }
+      }, 2200);
+    }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', run, { once: true }); } else { run(); }
+})();(() => {
   const PAGE_ID = (location.pathname || '').replace(/^\/+/, '');
   if (!PAGE_ID || !PAGE_ID.startsWith('playlist/')) return;
 
