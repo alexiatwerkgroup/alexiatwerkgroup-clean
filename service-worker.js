@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alexia-pwa-v1.0.0';
-const RUNTIME_CACHE = 'alexia-runtime-v1.0.0';
+const CACHE_NAME = 'alexia-pwa-v2.0.0';
+const RUNTIME_CACHE = 'alexia-runtime-v2.0.0';
 const OFFLINE_URL = '/';
 
 self.addEventListener('install', event => {
@@ -10,7 +10,9 @@ self.addEventListener('install', event => {
       '/manifest.json',
       '/icon-192.png',
       '/icon-512.png',
-      '/apple-touch-icon.png'
+      '/apple-touch-icon.png',
+      '/screenshot-mobile.png',
+      '/screenshot-desktop.png'
     ])).then(() => self.skipWaiting())
   );
 });
@@ -19,7 +21,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => Promise.all(
       keys.filter(key => ![CACHE_NAME, RUNTIME_CACHE].includes(key))
-          .map(key => caches.delete(key))
+        .map(key => caches.delete(key))
     )).then(() => self.clients.claim())
   );
 });
@@ -29,7 +31,6 @@ self.addEventListener('fetch', event => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-
   if (url.origin !== self.location.origin) return;
 
   const isPage = request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
