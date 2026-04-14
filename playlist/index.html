@@ -70,20 +70,33 @@
 .badges.badges-actions .badge { padding-left: 8px !important; padding-right: 8px !important; white-space: nowrap !important; }
 
 
+@keyframes hottestShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
 #playlist-hero-badges > #featured-moment-btn,
 #playlist-hero-badges .badge.badge-btn#featured-moment-btn {
   flex: 1 1 auto !important;
   flex-grow: 1 !important;
   min-width: 0 !important;
-  background: rgba(180, 0, 0, 0.10) !important;
-  background-image: none !important;
+  background: linear-gradient(
+    105deg,
+    rgba(180,0,0,0.10) 0%,
+    rgba(180,0,0,0.10) 35%,
+    rgba(255,120,120,0.38) 50%,
+    rgba(180,0,0,0.10) 65%,
+    rgba(180,0,0,0.10) 100%
+  ) !important;
+  background-size: 300% 100% !important;
   color: #ffffff !important;
   font-weight: 800 !important;
   font-size: 13px !important;
-  border: 1.5px solid rgba(200, 0, 0, 0.50) !important;
-  box-shadow: 0 0 20px rgba(180, 0, 0, 0.28) !important;
+  border: 1.5px solid rgba(200,0,0,0.50) !important;
+  box-shadow: 0 0 20px rgba(180,0,0,0.28) !important;
   letter-spacing: .07em !important;
-  text-shadow: 0 0 8px rgba(255, 100, 100, 0.55) !important;
+  text-shadow: 0 0 8px rgba(255,100,100,0.55) !important;
+  animation: hottestShimmer 2.4s linear infinite, heartBloodPulse 1.85s ease-in-out infinite !important;
 }
 </style>
 <style id="alexia-global-heatmap-fix">
