@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alexia-pwa-v2.3.0';
-const RUNTIME_CACHE = 'alexia-runtime-v2.3.0';
+const CACHE_NAME = 'alexia-pwa-v2.4.0';
+const RUNTIME_CACHE = 'alexia-runtime-v2.4.0';
 const OFFLINE_URL = '/';
 
 self.addEventListener('install', event => {
@@ -35,18 +35,30 @@ self.addEventListener('fetch', event => {
 
   const isPage = request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
   if (isPage) {
+    const isVideoPage = url.pathname.startsWith('/playlist/') && url.pathname.replace('/playlist/', '').length > 3;
     event.respondWith(
       fetch(request)
-        .then(response => {
-          // Si es una página de video que no existe (404), redirigir a /playlist/
-          if (response.status === 404 && url.pathname.startsWith('/playlist/') && url.pathname.length > 10) {
-            return Response.redirect('/playlist/', 302);
+        .then(async response => {
+          if (response.status === 404) {
+            return isVideoPage ? Response.redirect('/playlist/', 302) : response;
           }
-          // Solo cachear respuestas 200
-          if (response.status === 200) {
-            const copy = response.clone();
-            caches.open(RUNTIME_CACHE).then(cache => cache.put(request, copy));
+          if (response.status === 200 && isVideoPage) {
+            // Detectar página genérica (Cloudflare fallback = ~9675 bytes con "Official Entry")
+            const clone = response.clone();
+            const text = await clone.text();
+            if (text.length < 15000 && text.includes('Official Entry')) {
+              // Es la página genérica — redirigir a playlist
+              return Response.redirect('/playlist/', 302);
+            }
+            // Es una página real — cachear
+            const copy = new Response(text, { status: response.status, headers: response.headers });
+            const cacheClone = new Response(text, { status: response.status, headers: response.headers });
+            caches.open(RUNTIME_CACHE).then(cache => cache.put(request, cacheClone));
+            return copy;
           }
+          // No video page — cachear normalmente
+          const copy = response.clone();
+          caches.open(RUNTIME_CACHE).then(cache => cache.put(request, copy));
           return response;
         })
         .catch(() => caches.match(request).then(r => r || caches.match('/playlist/') || caches.match(OFFLINE_URL)))
