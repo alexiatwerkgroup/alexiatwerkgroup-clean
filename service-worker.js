@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alexia-pwa-v2.1.0';
-const RUNTIME_CACHE = 'alexia-runtime-v2.1.0';
+const CACHE_NAME = 'alexia-pwa-v2.3.0';
+const RUNTIME_CACHE = 'alexia-runtime-v2.3.0';
 const OFFLINE_URL = '/';
 
 self.addEventListener('install', event => {
@@ -38,11 +38,18 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(request)
         .then(response => {
-          const copy = response.clone();
-          caches.open(RUNTIME_CACHE).then(cache => cache.put(request, copy));
+          // Si es una página de video que no existe (404), redirigir a /playlist/
+          if (response.status === 404 && url.pathname.startsWith('/playlist/') && url.pathname.length > 10) {
+            return Response.redirect('/playlist/', 302);
+          }
+          // Solo cachear respuestas 200
+          if (response.status === 200) {
+            const copy = response.clone();
+            caches.open(RUNTIME_CACHE).then(cache => cache.put(request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match(request).then(r => r || caches.match('/index.html') || caches.match(OFFLINE_URL)))
+        .catch(() => caches.match(request).then(r => r || caches.match('/playlist/') || caches.match(OFFLINE_URL)))
     );
     return;
   }
