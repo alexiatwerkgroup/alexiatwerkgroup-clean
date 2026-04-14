@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alexia-pwa-v2.4.0';
-const RUNTIME_CACHE = 'alexia-runtime-v2.4.0';
+const CACHE_NAME = 'alexia-pwa-v2.5.0';
+const RUNTIME_CACHE = 'alexia-runtime-v2.5.0';
 const OFFLINE_URL = '/';
 
 self.addEventListener('install', event => {
@@ -35,7 +35,35 @@ self.addEventListener('fetch', event => {
 
   const isPage = request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
   if (isPage) {
-    const isVideoPage = url.pathname.startsWith('/playlist/') && url.pathname.replace('/playlist/', '').length > 3;
+    const rawSlug = url.pathname.replace('/playlist/', '').replace(/\.html$/, '');
+    const isVideoPage = url.pathname.startsWith('/playlist/') && rawSlug.length > 3;
+
+    // Normalizar slug con caracteres especiales → redirigir al archivo correcto
+    
+function normalizeSlug(slug) {
+  try {
+    // 1. Decodificar URL encoding (puede estar multi-encoded)
+    let s = slug;
+    for (let i = 0; i < 3; i++) {
+      try { const d = decodeURIComponent(s); if (d === s) break; s = d; } catch(e) { break; }
+    }
+    // 2. Reemplazar caracteres especiales por equivalentes ASCII
+    s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // quitar diacríticos
+    s = s.replace(/[^a-zA-Z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+    return s;
+  } catch(e) { return slug; }
+}
+    if (isVideoPage) {
+      const SLUG_MAP = {"chl%C3%B6e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chlöe-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl#U251c#U2562e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl%23U251c%23U2562e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl%2523U251c%2523U2562e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl%2525C3%2525B6e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl%25C3%25B6e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl-ae-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography","chl├╢e-have-mercy-foxyen-choreography":"chloe-have-mercy-foxyen-choreography"};
+      const normalizedSlug = normalizeSlug(rawSlug);
+      // Buscar redirect exacto o por slug normalizado
+      const redirectTarget = SLUG_MAP[rawSlug] || SLUG_MAP[decodeURIComponent(rawSlug)];
+      if (redirectTarget && redirectTarget !== rawSlug) {
+        event.respondWith(Promise.resolve(Response.redirect('/playlist/' + redirectTarget, 301)));
+        return;
+      }
+    }
+
     event.respondWith(
       fetch(request)
         .then(async response => {
