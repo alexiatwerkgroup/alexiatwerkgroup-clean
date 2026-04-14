@@ -707,7 +707,76 @@ async function renderAdminPanel(page) {
 
 <div id="azotame-dynamic-slot"></div>
 
-<!-- dynamic-slot-removed -->
+<script id="azotame-dynamic-slot-script">
+(function(){
+  const slot = document.getElementById('azotame-dynamic-slot');
+  if(!slot) return;
+  const recommendHtml = `
+    <div class="recommend-cta">
+      <div class="recommend-title">Suggest a hot video for the playlist.</div>
+      <div class="recommend-sub">Win a monthly custom video from Alexia or one of her models.</div>
+      <a class="recommend-btn" href="../recommend.html">Recommend your video</a>
+    </div>
+  `;
+  const commentsHtml = `
+    <div class="yt-comments" data-comments-root>
+      <div class="yt-comments-head">
+        <div>
+          <h2>Leave a message</h2>
+          <div class="yt-comments-meta-line"><span class="yt-comments-count">0</span> comments</div>
+        </div>
+        <button class="yt-sort" type="button" aria-label="Top comments">☰ <small>Top comments</small></a>
+      </div>
+      <div class="yt-compose">
+        <div class="yt-avatar">A</div>
+        <div class="yt-compose-main">
+          <textarea class="yt-input" rows="1" placeholder="Add a comment..."></textarea>
+          <div class="yt-compose-actions">
+            <button class="yt-btn-lite" type="button" data-comment-cancel>Cancel</button>
+            <button class="yt-btn-post" type="button" data-comment-post disabled>Comment</button>
+          </div>
+          <div class="yt-comment-status" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="yt-comments-list"><div class="yt-empty">No comments yet. Be the first to say something.</div></div>
+    </div>
+  `;
+  function bindComposerUI(){
+    const input = slot.querySelector('.yt-input');
+    const cancelBtn = slot.querySelector('.yt-btn-lite');
+    const postBtn = slot.querySelector('.yt-btn-post');
+    if (input && postBtn) {
+      const sync = () => { postBtn.disabled = !input.value.trim(); };
+      input.addEventListener('input', sync);
+      sync();
+      if (cancelBtn) cancelBtn.addEventListener('click', () => { input.value=''; sync(); input.blur(); });
+    }
+  }
+  async function existingCommentCount(){
+    try{
+      if(!(window.supabase && window.supabase.createClient)) return 0;
+      const client = window.supabase.createClient(
+        (typeof window.SUPABASE_URL !== 'undefined' ? window.SUPABASE_URL : 'https://vieqniahusdrfkpcuqsn.supabase.co'),
+        (typeof window.SUPABASE_KEY !== 'undefined' ? window.SUPABASE_KEY : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpZXFuaWFodXNkcmZrcGN1cXNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MTk2NjksImV4cCI6MjA4ODk5NTY2OX0.Ox8gUp0g-aYRvI2Zj6PWxx5unO3m3sEtal0OKLvPSkQ')
+      );
+      const pagePath = (location.pathname || '').replace(/\.html$/i, '');
+      const pageSlug = (pagePath.split('/').pop() || 'page').trim();
+      const slugVariants = Array.from(new Set([pagePath, pageSlug, '/' + pageSlug].filter(Boolean)));
+      const { data, error } = await client.from('video_comments').select('id,page_slug').in('page_slug', slugVariants).limit(1000);
+      if(error || !Array.isArray(data)) return 0;
+      return data.length;
+    }catch(e){ return 0; }
+  }
+  async function init(){
+    const count = await existingCommentCount();
+    const forceComments = count > 0;
+    const choice = forceComments ? 'comments' : (Math.random() < 0.6 ? 'recommend' : 'comments');
+    slot.innerHTML = choice === 'comments' ? commentsHtml : recommendHtml;
+    if (choice === 'comments') bindComposerUI();
+  }
+  init();
+})();
+</script>
 
 </section>
 
