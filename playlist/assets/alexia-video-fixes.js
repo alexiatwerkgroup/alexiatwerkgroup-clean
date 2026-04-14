@@ -383,3 +383,45 @@
   }
 })();
 
+
+
+/* ===== VOTE-ONCE FIX ===== */
+(function() {
+  if (window.__alexiaVoteOnceFix) return;
+  window.__alexiaVoteOnceFix = true;
+  const PREFIX = 'alexia_voted_';
+  function getKey() {
+    const pid = (window.PAGE_ID || location.pathname).replace(/^\/+|\/+$/g,'').replace(/\//g,'-');
+    return PREFIX + pid;
+  }
+  function hasVoted() { try { return !!localStorage.getItem(getKey()); } catch(e) { return false; } }
+  function markVoted() { try { localStorage.setItem(getKey(), '1'); } catch(e) {} }
+  function lockBtn(btn) {
+    if (!btn || btn.dataset.voteLocked) return;
+    btn.dataset.voteLocked = '1';
+    btn.style.opacity = '0.55';
+    btn.style.cursor = 'not-allowed';
+    btn.style.pointerEvents = 'none';
+    btn.disabled = true;
+    btn.title = 'Ya votaste este clip';
+  }
+  function setup() {
+    const btn = document.querySelector('.vote-btn, [data-inline-votes], button[class*="vote-btn"]');
+    if (!btn) { setTimeout(setup, 500); return; }
+    if (hasVoted()) { lockBtn(btn); return; }
+    btn.addEventListener('click', function(e) {
+      if (hasVoted()) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        lockBtn(btn);
+        return;
+      }
+      markVoted();
+      setTimeout(function() { lockBtn(btn); }, 300);
+    }, true);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup, { once: true });
+  } else { setup(); }
+})();
+/* ===== END VOTE-ONCE FIX ===== */
