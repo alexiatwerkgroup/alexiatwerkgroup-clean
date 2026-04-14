@@ -782,7 +782,7 @@ async function renderAdminPanel(page) {
 
   let replayMomentSeconds = 20 + Math.floor(Math.random() * 40);
 
-  async function refreshReplayMoment(){
+  async function /* refreshReplayMoment-removed */{
     replayMomentSeconds = 20 + Math.floor(Math.random() * 40);
   }
 
@@ -820,7 +820,7 @@ async function renderAdminPanel(page) {
   const initial = Number(new URLSearchParams(location.search).get('t') || 0);
   if (initial > 0) applyStart(initial, false);
 
-  refreshReplayMoment().then(updateReplayChip);
+  /* refreshReplayMoment-removed */.then(updateReplayChip);
 
   document.querySelectorAll('.clip-chip[data-seek], .replay-chip[data-seek]').forEach(btn => {
     btn.addEventListener('click', async () => {
@@ -831,7 +831,7 @@ async function renderAdminPanel(page) {
         localStorage.setItem(replayStorageKey, JSON.stringify(replayCounts));
         try {
         } catch(e) {}
-        await refreshReplayMoment();
+        await /* refreshReplayMoment-removed */
         updateReplayChip();
       }
       if (seconds > 0) applyStart(seconds, true);
